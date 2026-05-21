@@ -1,0 +1,108 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# =========================
+# Virtual environments
+# =========================
+venv/
+.venv/
+env/
+ENV/
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# macOS / Linux junk
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs / runtime artifacts
+# =========================
+agent_logs/
+logs/
+*.log
+
+# =========================
+# Test / coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# =========================
+# Environment / secrets
+# =========================
+.env
+.env.*
+secrets.json
+config.local.json
+
+# =========================
+# Model / AI artifacts
+# =========================
+models/
+checkpoints/
+downloads/
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
+*.tmp
+
+# =========================
+# Generated outputs
+# =========================
+reports/
+outputs/
+artifacts/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# OS-generated archives
+# =========================
+*.zip
+*.tar
+*.tar.gz
+
+# =========================
+# Local evaluator artifacts
+# =========================
+sandbox/
+scratch/
+
+# =========================
+*.log
+logs/
+agent_logs/
+# =========================
+
+workspace/
+*.bak
+workspace/*.bak
