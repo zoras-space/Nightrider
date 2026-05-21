@@ -1,70 +1,170 @@
 #!/usr/bin/env python3
+"""
+solution.py — Competition entry point
+======================================
+
+ARCHITECTURE (top to bottom):
+  1. read_input()    — reads from stdin or --input file
+  2. parse_input()   — turns raw text into a structured Python object
+  3. solve()         — YOUR LOGIC GOES HERE (replace this when spec drops)
+  4. format_output() — turns the result into a printable string
+  5. write_output()  — prints to stdout or writes to --output file
+
+Flow:
+  stdin/file
+      └─► read_input()
+              └─► parse_input()  →  (data, is_json)
+                      └─► solve()
+                              └─► format_output()
+                                      └─► write_output()  →  stdout/file
+
+Exit codes:
+  0 = success
+  1 = bad input (empty or unreadable)
+  2 = input file not found
+  3 = unexpected crash
+"""
+
 import sys
 import json
 import argparse
 import logging
-import traceback
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
-logging.basicConfig(level=logging.WARNING, format="%(asctime)s [%(levelname)s] %(message)s", handlers=[logging.StreamHandler(sys.stderr)])
-logger = logging.getLogger(__name__)
+# ─────────────────────────────────────────────
+# LOGGING  (stderr only — never pollutes stdout)
+# ─────────────────────────────────────────────
+logging.basicConfig(
+    stream=sys.stderr,
+    level=logging.WARNING,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
+log = logging.getLogger(__name__)
 
-def build_parser():
-    p = argparse.ArgumentParser(description="Competition solution")
-    p.add_argument("--input", "-i", metavar="FILE")
-    p.add_argument("--output", "-o", metavar="FILE")
-    p.add_argument("--verbose", "-v", action="store_true")
-    return p
 
-def process(data: str) -> Any:
-    data = data.strip()
-    if not data:
-        raise ValueError("Empty input")
-    try:
-        parsed = json.loads(data)
-        return _process_json(parsed)
-    except json.JSONDecodeError:
-        return _process_text(data)
-
-def _process_json(payload: Any) -> Any:
-    return {"status": "ok", "result": payload}
-
-def _process_text(text: str) -> str:
-    return text
-
-def read_input(path: Optional[str]) -> str:
+# ─────────────────────────────────────────────
+# STEP 1 — READ
+# ─────────────────────────────────────────────
+def read_input(path: str | None) -> str:
+    """Return raw text from a file or stdin."""
     if path:
         return Path(path).read_text(encoding="utf-8")
     return sys.stdin.read()
 
-def write_output(result: Any, path: Optional[str]) -> None:
-    text = result if isinstance(result, str) else json.dumps(result, indent=2, ensure_ascii=False)
+
+# ─────────────────────────────────────────────
+# STEP 2 — PARSE
+# Returns (parsed_value, was_json).
+# Replace this if the spec uses CSV, XML, a custom format, etc.
+# ─────────────────────────────────────────────
+def parse_input(raw: str) -> tuple[Any, bool]:
+    raw = raw.strip()
+    if not raw:
+        raise ValueError("Empty input")
+
+    try:
+        return json.loads(raw), True   # valid JSON of any kind
+    except json.JSONDecodeError:
+        return raw, False              # plain text
+
+
+# ─────────────────────────────────────────────
+# STEP 3 — SOLVE  ← REPLACE THIS WHEN SPEC DROPS
+#
+# Args:
+#   data    — parsed value (dict, list, str, int, bool, None, …)
+#   is_json — True if the original input was JSON
+#
+# Return any JSON-serialisable value or a plain string.
+# ─────────────────────────────────────────────
+def solve(data: Any, is_json: bool) -> Any:
+
+    # ── STUB ──────────────────────────────────
+    if not is_json:
+        return data                           # plain text → echo back
+    return {"status": "ok", "result": data}  # any JSON → wrap in envelope
+    # ── END STUB ──────────────────────────────
+
+
+# ─────────────────────────────────────────────
+# STEP 4 — FORMAT
+# ─────────────────────────────────────────────
+def format_output(result: Any) -> str:
+    if isinstance(result, str):
+        return result
+    return json.dumps(result, indent=2, ensure_ascii=False)
+
+
+# ─────────────────────────────────────────────
+# STEP 5 — WRITE
+# ─────────────────────────────────────────────
+def write_output(result: Any, path: str | None) -> None:
+    text = format_output(result)
     if path:
         Path(path).write_text(text + "\n", encoding="utf-8")
     else:
         print(text)
 
-def main(argv=None) -> int:
+
+# ─────────────────────────────────────────────
+# COMPAT SHIM — tests import process() by name
+# ─────────────────────────────────────────────
+def process(raw: str) -> Any:
+    data, is_json = parse_input(raw)
+    return solve(data, is_json)
+
+
+# ─────────────────────────────────────────────
+# CLI
+# ─────────────────────────────────────────────
+def build_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(
+        description="Competition solution",
+        epilog='Example:  echo \'{"x": 1}\' | python3 solution.py',
+    )
+    p.add_argument("--input",   "-i", metavar="FILE", help="Read from FILE (default: stdin)")
+    p.add_argument("--output",  "-o", metavar="FILE", help="Write to FILE (default: stdout)")
+    p.add_argument("--verbose", "-v", action="store_true", help="Debug logging to stderr")
+    return p
+
+
+# ─────────────────────────────────────────────
+# MAIN
+# ─────────────────────────────────────────────
+def main(argv: list | None = None) -> int:
     args = build_parser().parse_args(argv)
+
     if args.verbose:
-        logger.setLevel(logging.DEBUG)
         logging.getLogger().setLevel(logging.DEBUG)
+        log.setLevel(logging.DEBUG)
+
     try:
         raw = read_input(args.input)
-        result = process(raw)
+        log.debug("Read %d chars", len(raw))
+
+        data, is_json = parse_input(raw)
+        log.debug("Parsed (is_json=%s): %r", is_json, data)
+
+        result = solve(data, is_json)
+        log.debug("Result: %r", result)
+
         write_output(result, args.output)
         return 0
+
     except ValueError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
+
     except FileNotFoundError as exc:
-        print(f"ERROR: {exc}", file=sys.stderr)
+        print(f"ERROR: file not found — {exc}", file=sys.stderr)
         return 2
+
     except Exception as exc:
         print(f"FATAL: {exc}", file=sys.stderr)
-        logger.debug(traceback.format_exc())
+        log.debug("Traceback:", exc_info=True)
         return 3
+
 
 if __name__ == "__main__":
     sys.exit(main())

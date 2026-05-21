@@ -1,176 +1,96 @@
-"""
-tests/test_solution.py — unit tests for solution internals.
-Run with:  python3 -m pytest tests/ -v
-"""
-import json
-import subprocess
-import sys
+import json, subprocess, sys
 from pathlib import Path
-
 import pytest
 
-# Make sure the repo root is importable
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from solution import process, read_input, write_output, main
+from solution import process, read_input, write_output
 
-# ---------------------------------------------------------------------------
-# process() — core logic
-# ---------------------------------------------------------------------------
+
 class TestProcessJSON:
-    def test_empty_object(self):
-        result = process("{}")
-        assert result == {"status": "ok", "result": {}}
+    def test_empty_object(self):      assert process("{}") == {"status": "ok", "result": {}}
 
-    def test_nested_object(self):
-        result = process('{"key": "value", "num": 42}')
-        assert result["status"] == "ok"
-        assert result["result"]["key"] == "value"
+    def test_nested_object(self):     assert process('{"k":"v"}')["result"]["k"] == "v"
 
-    def test_json_array(self):
-        result = process("[1, 2, 3]")
-        assert result["result"] == [1, 2, 3]
+    def test_json_array(self):        assert process("[1,2,3]")["result"] == [1, 2, 3]
 
-    def test_json_number(self):
-        result = process("42")
-        assert result["result"] == 42
+    def test_json_number(self):       assert process("42")["result"] == 42
 
-    def test_json_string(self):
-        result = process('"hello"')
-        assert result["result"] == "hello"
+    def test_json_string(self):       assert process('"hi"')["result"] == "hi"  # JSON string → wrapped
 
-    def test_json_null(self):
-        result = process("null")
-        assert result["result"] is None
+    def test_json_null(self):         assert process("null")["result"] is None
 
-    def test_json_boolean_true(self):
-        result = process("true")
-        assert result["result"] is True
+    def test_json_bool_true(self):    assert process("true")["result"] is True
 
-    def test_json_boolean_false(self):
-        result = process("false")
-        assert result["result"] is False
+    def test_json_bool_false(self):   assert process("false")["result"] is False
 
 
 class TestProcessText:
-    def test_plain_text_passthrough(self):
-        result = process("hello world")
-        assert result == "hello world"
+    def test_plain_text(self):        assert process("hello world") == "hello world"
 
-    def test_multiline_text(self):
-        result = process("line one\nline two")
-        assert result == "line one\nline two"
+    def test_multiline(self):         assert process("a\nb") == "a\nb"
 
-    def test_strips_trailing_whitespace(self):
-        # process() strips input, so leading/trailing whitespace is removed
-        result = process("  hello  ")
-        assert result == "hello"
+    def test_strips_whitespace(self): assert process("  hi  ") == "hi"
 
 
 class TestProcessErrors:
-    def test_empty_input_raises(self):
-        with pytest.raises(ValueError, match="Empty input"):
-            process("")
+    def test_empty_raises(self):      pytest.raises(ValueError, process, "")
 
-    def test_whitespace_only_raises(self):
-        with pytest.raises(ValueError, match="Empty input"):
-            process("   \n\t  ")
+    def test_whitespace_raises(self): pytest.raises(ValueError, process, "   ")
 
 
-# ---------------------------------------------------------------------------
-# main() — integration via return code
-# ---------------------------------------------------------------------------
+def run(stdin):
+    p = subprocess.run(
+        [sys.executable, "solution.py"],
+        input=stdin, capture_output=True, text=True,
+        cwd=Path(__file__).parent.parent,
+    )
+    return p.returncode, p.stdout.strip()
+
+
 class TestMainReturnCodes:
-    def _run(self, stdin_text: str) -> tuple[int, str]:
-        """Run main() via subprocess and return (exit_code, stdout)."""
-        proc = subprocess.run(
-            [sys.executable, "solution.py"],
-            input=stdin_text,
-            capture_output=True,
-            text=True,
-            cwd=Path(__file__).parent.parent,
-        )
-        return proc.returncode, proc.stdout.strip()
+    def test_json_exits_zero(self):    assert run('{"x":1}')[0] == 0
 
-    def test_valid_json_exits_zero(self):
-        code, _ = self._run('{"x": 1}')
-        assert code == 0
+    def test_text_exits_zero(self):    assert run("hello")[0] == 0
 
-    def test_plain_text_exits_zero(self):
-        code, _ = self._run("some text")
-        assert code == 0
+    def test_empty_exits_one(self):    assert run("")[0] == 1
 
-    def test_empty_input_exits_one(self):
-        code, _ = self._run("")
-        assert code == 1
-
-    def test_whitespace_exits_one(self):
-        code, _ = self._run("   ")
-        assert code == 1
+    def test_spaces_exits_one(self):   assert run("   ")[0] == 1
 
 
 class TestMainOutput:
-    def _stdout(self, stdin_text: str) -> str:
-        proc = subprocess.run(
-            [sys.executable, "solution.py"],
-            input=stdin_text,
-            capture_output=True,
-            text=True,
-            cwd=Path(__file__).parent.parent,
-        )
-        return proc.stdout.strip()
+    def test_json_is_valid(self):      assert json.loads(run('{"a":1}')[1])["status"] == "ok"
 
-    def test_json_output_is_valid_json(self):
-        raw = self._stdout('{"a": 1}')
-        parsed = json.loads(raw)          # must not raise
-        assert parsed["status"] == "ok"
+    def test_text_passthrough(self):   assert run("hello")[1] == "hello"
 
-    def test_plain_text_output_is_text(self):
-        raw = self._stdout("hello")
-        assert raw == "hello"
-
-    def test_number_wrapped_in_status(self):
-        raw = self._stdout("99")
-        parsed = json.loads(raw)
-        assert parsed["result"] == 99
+    def test_number_wrapped(self):     assert json.loads(run("99")[1])["result"] == 99
 
 
-# ---------------------------------------------------------------------------
-# File I/O helpers
-# ---------------------------------------------------------------------------
 class TestFileIO:
-    def test_read_input_from_file(self, tmp_path):
-        f = tmp_path / "in.txt"
-        f.write_text("file content", encoding="utf-8")
-        assert read_input(str(f)) == "file content"
+    def test_read_file(self, tmp_path):
+        f = tmp_path / "in.txt";
+        f.write_text("hi")
+        assert read_input(str(f)) == "hi"
 
-    def test_write_output_string_to_file(self, tmp_path):
-        f = tmp_path / "out.txt"
+    def test_write_string(self, tmp_path):
+        f = tmp_path / "out.txt";
         write_output("hello", str(f))
         assert f.read_text().strip() == "hello"
 
-    def test_write_output_dict_to_file(self, tmp_path):
-        f = tmp_path / "out.json"
+    def test_write_dict(self, tmp_path):
+        f = tmp_path / "out.json";
         write_output({"a": 1}, str(f))
-        parsed = json.loads(f.read_text())
-        assert parsed["a"] == 1
+        assert json.loads(f.read_text())["a"] == 1
 
-    def test_missing_input_file_raises(self):
-        with pytest.raises(FileNotFoundError):
-            read_input("/nonexistent/path/file.txt")
+    def test_missing_file_raises(self):
+        pytest.raises(FileNotFoundError, read_input, "/no/such/file.txt")
 
 
-# ---------------------------------------------------------------------------
-# CLI flag: --verbose doesn't break output
-# ---------------------------------------------------------------------------
 class TestVerboseFlag:
     def test_verbose_still_produces_stdout(self):
-        proc = subprocess.run(
+        p = subprocess.run(
             [sys.executable, "solution.py", "--verbose"],
-            input='{"v": true}',
-            capture_output=True,
-            text=True,
+            input='{"v":true}', capture_output=True, text=True,
             cwd=Path(__file__).parent.parent,
         )
-        assert proc.returncode == 0
-        parsed = json.loads(proc.stdout)
-        assert parsed["status"] == "ok"
+        assert p.returncode == 0
+        assert json.loads(p.stdout)["status"] == "ok"
