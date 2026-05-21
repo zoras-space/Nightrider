@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+agent_logs/dashboard_server.log
+workspace/*.bak
+agent_logs/*.log
