@@ -105,6 +105,10 @@ Current readiness status:
 
 Checkpoint tag: `agent-readiness-1945`
 
+Team repository: `https://github.com/zoras-space/Nightrider`
+
+Final submission commit: the commit pointed to by `agent-readiness-1945`.
+
 ---
 
 ## Running on Another Computer
@@ -167,4 +171,7 @@ Every log entry includes timestamps.
 - `agent_manifest.json` discloses local model usage.
 - `workspace/solution.py` contains the generated solution.
 - `agent_logs/` contains prompts, decisions, commands, tests, errors, interventions, and final report.
+- Public score observed in logs: `100%`.
+- Dependencies are documented in `requirements.txt`.
 - No paid API keys or secrets are included.
+- Virtual environments, Python bytecode caches, generated backups, and dashboard server logs are ignored and removed from Git tracking for final submission cleanup.

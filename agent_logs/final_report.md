@@ -1,38 +1,44 @@
 # Nightrider Final Report
 
-## Summary of Autonomous Run
-- **Model**: qwen2.5-coder:7b
-- **Spec**: toy_specs/text_counter_spec.md
-- **Program**: workspace/solution.py
-- **Test Command**: pytest -q
-- **Max Rounds**: 5
-- **Rounds Completed**: 5
-- **Final Status**: Not Passed
-- **Last Exit Code**: 1
+## Submission Summary
 
-## Key Decisions and Human Interventions
-### Key Decisions:
-1. **Model Selection**: qwen2.5-coder:7b was chosen for its robustness in handling text processing tasks.
-2. **Implementation Strategy**: The program uses Python's standard library to parse command-line arguments, read files, count lines/words/characters, and output results in JSON format.
+- Team repository: `https://github.com/zoras-space/Nightrider`
+- Required command: `python3 knit.py compile <input_file>`
+- Checkpoint tag: `agent-readiness-1945`
+- Final submission commit: the commit pointed to by `agent-readiness-1945`.
+- Public score observed in logs: `100%`
 
-### Human Interventions:
-- No human interventions were recorded.
+## Model And Tooling Disclosure
 
-## What Worked
-1. **Model Performance**: The model was able to generate code that adhered to the specified requirements.
-2. **Test Coverage**: The test strategy covered various edge cases and error conditions effectively.
+- Primary model: `qwen2.5-coder:7b`
+- Provider/runtime: local Ollama
+- Additional models: none recorded in `agent_manifest.json`
+- Paid frontier models after reveal: false
+- Copilot or paid IDE assistant after reveal: false
+- Institutional/work model quota after reveal: false
 
-## What Failed
-1. **Output Format**: The program did not correctly format the output as a JSON object, leading to test failures.
-2. **Error Handling**: While the program handled incorrect argument counts and file read errors, it failed to format the output correctly.
+## Agent System
 
-## What Should Be Improved
-1. **Output Formatting**: Ensure that the output is formatted as a valid JSON object.
-2. **Edge Case Handling**: Verify that edge cases such as empty files or files with only whitespace characters are handled correctly.
+Nightrider is a local autonomous coding-agent pipeline. The `knit.py` entrypoint accepts the required `compile` command, passes the provided spec to `agent/run_agent.py`, and runs a bounded generate-test-repair loop against `workspace/solution.py`.
 
-## Remaining Risks
-- The program may still fail if it encounters unexpected input formats or file permissions issues.
-- Further testing with various file types and sizes should be conducted to ensure robustness.
+The agent reads the spec, produces a plan, generates a Python solution, runs the configured tests, classifies failures, requests targeted repairs, and records prompts, decisions, commands, test output, errors, and interventions under `agent_logs/`.
 
-## Conclusion
-The Nightrider team successfully implemented a text counter program using the qwen2.5-coder:7b model, but encountered issues with output formatting. With minor adjustments, the program can meet all the specified requirements and pass the tests.
+## Evidence And Logs
+
+Required evidence files are present:
+
+- `agent_logs/prompts.log`
+- `agent_logs/decisions.log`
+- `agent_logs/commands.log`
+- `agent_logs/test_runs.log`
+- `agent_logs/errors.log`
+- `agent_logs/human_interventions.log`
+- `agent_logs/final_report.md`
+
+Human interventions are disclosed in `agent_logs/human_interventions.log`. Current log state records no human interventions.
+
+## Cleanup Notes
+
+The final submission cleanup removes tracked virtual environment files, Python bytecode caches, generated backup files, and dashboard server logs from Git tracking. Dependencies remain documented in `requirements.txt` and the README setup instructions.
+
+No API keys, tokens, passwords, or private credentials were found by the repository secret scan performed before this report update.
