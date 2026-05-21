@@ -298,3 +298,10 @@ python3 secret_spec/test_runner/run_tests.py --program 'python3 workspace/soluti
 ## Presentation Notes
 
 For judges, emphasize the workflow evidence: the agent reads the spec, generates a plan, writes code, runs tests, repairs failures, and preserves logs. The final program matters, but the core project is the calm, repeatable Night Drive Loop that makes each autonomous decision inspectable.
+
+## Readiness Checkpoint Reference
+
+Repository readiness checkpoint tag:
+
+```bash
+agent-readiness-1945
