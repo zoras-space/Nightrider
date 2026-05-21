@@ -1,0 +1,44 @@
+import argparse
+import json
+import sys
+
+def count_no_rows_files(files):
+    total_count = 0
+    
+    for file in files:
+        try:
+            with open(file, 'r') as f:
+                lines = f.readlines()
+                count = sum(1 for line in lines if "No Rows" in line)
+                total_count += count
+        except FileNotFoundError:
+            sys.stderr.write(f"Error: File '{file}' not found.\n")
+            return 1
+        except PermissionError:
+            sys.stderr.write(f"Error: Permission denied to read file '{file}'.\n")
+            return 1
+    
+    result = {
+        "line_count": total_count,
+        "word_count": sum(len(line.split()) for line in lines),
+        "char_count": sum(len(line) for line in lines)
+    }
+    
+    print(json.dumps(result))
+    return 0
+
+def main():
+    parser = argparse.ArgumentParser(description="Count lines containing 'No Rows' in files.")
+    parser.add_argument('files', nargs='+', help='List of files to process.')
+    
+    args = parser.parse_args()
+    
+    if not args.files:
+        sys.stderr.write("Error: No files provided.\n")
+        return 2
+    
+    exit_code = count_no_rows_files(args.files)
+    return exit_code
+
+if __name__ == "__main__":
+    sys.exit(main())

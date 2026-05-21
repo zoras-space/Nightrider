@@ -1,0 +1,23 @@
+import argparse
+import sys
+
+def main():
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('-n', action='store_true', help='suppress newline')
+    
+    args = parser.parse_args()
+    
+    output = "k5"
+    if not args.n:
+        output += ' '
+    
+    try:
+        print(output, end='')
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+    else:
+        sys.exit(0)
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,23 @@
+import sys
+import json
+
+def main():
+    try:
+        input_data = sys.stdin.read()
+        lines = input_data.splitlines()
+        count = sum(1 for line in lines if "No Rows" in line.strip())
+        
+        # Return JSON output
+        result = {
+            "line_count": len(lines),
+            "nonempty_line_count": count,
+            "word_count": sum(len(line.split()) for line in lines),
+            "char_count": sum(len(line) for line in lines)
+        }
+        print(json.dumps(result))
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

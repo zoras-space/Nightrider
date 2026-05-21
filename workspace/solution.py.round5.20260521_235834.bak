@@ -1,0 +1,36 @@
+import argparse
+import sys
+
+def apply_pattern(name, cast_on, row):
+    # Placeholder for pattern application logic
+    print(f"Applying pattern '{name}' on row {row} with cast {cast_on}")
+    
+    # Implement actual pattern application logic here
+    # For example:
+    # data[row] = name * cast_on
+
+def main():
+    parser = argparse.ArgumentParser(description="Apply a pattern to a specified row.")
+    parser.add_argument("name", type=str, help="Name of the pattern")
+    parser.add_argument("cast_on", type=int, help="Number of rows on which the pattern should be applied")
+    parser.add_argument("row", type=int, help="Specific row where the pattern should be cast")
+
+    args = parser.parse_args()
+
+    if not args.name:
+        sys.stderr.write("Error: Missing name argument\n")
+        sys.exit(1)
+
+    if not args.cast_on or args.cast_on <= 0:
+        sys.stderr.write("Error: Invalid cast_on value. Must be greater than 0\n")
+        sys.exit(2)
+
+    if not args.row or args.row <= 0:
+        sys.stderr.write("Error: Invalid row value. Must be greater than 0\n")
+        sys.exit(3)
+
+    apply_pattern(args.name, args.cast_on, args.row)
+    sys.exit(0)
+
+if __name__ == "__main__":
+    main()

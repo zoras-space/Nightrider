@@ -1,0 +1,39 @@
+import argparse
+import re
+import sys
+
+def main():
+    parser = argparse.ArgumentParser(description="Search for patterns in files.")
+    parser.add_argument("pattern", help="The search pattern")
+    parser.add_argument("files", nargs='*', help="Files to search")
+    args = parser.parse_args()
+
+    try:
+        regex = re.compile(args.pattern, re.EXTENDED)
+    except re.error as e:
+        print(f"Invalid regular expression: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    found_any = False
+    for file in args.files:
+        try:
+            with open(file, 'r', encoding='utf-8') as f:
+                for line_number, line in enumerate(f, 1):
+                    if regex.search(line):
+                        if len(args.files) > 1:
+                            print(f"{file}:{line.strip()}", file=sys.stdout)
+                        else:
+                            print(line.strip(), file=sys.stdout)
+                        found_any = True
+        except FileNotFoundError:
+            print(f"Error: File not found - {file}", file=sys.stderr)
+            sys.exit(1)
+        except PermissionError:
+            print(f"Error: Permission denied - {file}", file=sys.stderr)
+            sys.exit(1)
+
+    if not found_any and len(args.files) > 0:
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

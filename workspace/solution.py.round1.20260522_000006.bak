@@ -1,0 +1,25 @@
+import argparse
+import sys
+
+def main():
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('-n', action='store_true', help='suppress newline')
+    
+    args, unknown_args = parser.parse_known_args()
+    
+    if unknown_args:
+        print("Error: Unknown arguments provided.", file=sys.stderr)
+        sys.exit(1)
+    
+    output = "k5 "
+    if not args.n:
+        output += '\n'
+    
+    try:
+        print(output, end='')
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
