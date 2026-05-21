@@ -1,0 +1,25 @@
+
+[2026-05-21 12:04:28] ERROR
+Agent run failed: No module named 'requests'
+
+[2026-05-21 12:07:01] ERROR
+Agent run failed: The 'requests' package is required for Ollama access. Install dependencies with: python3 -m pip install -r requirements.txt
+
+[2026-05-21 12:08:26] ERROR
+Agent run failed: Could not reach Ollama at http://localhost:11434/api/generate. Start it with 'ollama serve' and ensure the model is pulled.
+
+[2026-05-21 15:19:49] ERROR
+Interactive chat failed: Could not reach Ollama at http://localhost:11434/api/generate. Start it with 'ollama serve' and ensure the model is pulled.
+
+[2026-05-21 15:20:02] ERROR
+Interactive chat failed: Could not reach Ollama at http://localhost:11434/api/generate. Start it with 'ollama serve' and ensure the model is pulled.
+
+[2026-05-21 15:33:55] ERROR
+Agent run failed: Could not reach Ollama at http://localhost:11434/api/generate. Start it with 'ollama serve' and ensure the model is pulled.
+
+[2026-05-21 18:05:01] ERROR
+Could not read spec secret_spec/spec.md: [Errno 2] No such file or directory: 'secret_spec/spec.md'
+
+[2026-05-21 18:05:32] ERROR
+Could not read spec secret_spec/spec.md: [Errno 2] No such file or directory: 'secret_spec/spec.md'
+
