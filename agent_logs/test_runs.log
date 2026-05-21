@@ -2814,3 +2814,3259 @@ FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_a
 stderr:
 <empty>
 
+[2026-05-21 22:00:09] TEST_RUN
+round: 1
+exit_code: 1
+stdout:
+FF..F.F.FF..FF..FFFF.                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_inventory_cli.py:40: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_inventory_cli.py:54: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_json_transformer.py:37: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "array" in result.stderr.lower()
+E       assert 'array' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 37,...                                      ^^^\nnameerror: name \'sys\' is not defined. did you forget to import \'sys\'?\n'
+E        +  where 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 37,...                                      ^^^\nnameerror: name \'sys\' is not defined. did you forget to import \'sys\'?\n' = <built-in method lower of str object at 0x106717430>()
+E        +    where <built-in method lower of str object at 0x106717430> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 37,...                                      ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 37,...                                      ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').stderr
+
+toy_tests/test_json_transformer.py:64: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter.py:29: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter.py:44: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:33: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:49: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:83: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:22: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:39: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-28/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:54: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert '...
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+12 failed, 9 passed in 0.94s
+stderr:
+<empty>
+
+[2026-05-21 22:00:10] TEST_RUN
+round: 2
+exit_code: 1
+stdout:
+FFFFFFFF.........FFF.                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "inventory": {"apple": 2, "banana": 2},
+            "totals": [7, 4],
+        }
+E       AssertionError: assert {'char_count'...rd_count': 11} == {'inventory':...tals': [7, 4]}
+E         
+E         Left contains 3 more items:
+E         {'char_count': 51, 'line_count': 5, 'word_count': 11}
+E         Right contains 2 more items:
+E         {'inventory': {'apple': 2, 'banana': 2}, 'totals': [7, 4]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:42: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {"inventory": {}, "totals": [0]}
+E       AssertionError: assert {'char_count'...ord_count': 7} == {'inventory':...'totals': [0]}
+E         
+E         Left contains 3 more items:
+E         {'char_count': 31, 'line_count': 3, 'word_count': 7}
+E         Right contains 2 more items:
+E         {'inventory': {}, 'totals': [0]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:55: AssertionError
+________________________ test_remove_too_many_is_error _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_remove_too_many_is_error0')
+
+    def test_remove_too_many_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple 1\nREMOVE apple 2\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...any_is_error0/commands.txt'], returncode=0, stdout='{"line_count": 2, "word_count": 6, "char_count": 27}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:64: AssertionError
+_______________________ test_malformed_command_is_error ________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_malformed_command_is_erro0')
+
+    def test_malformed_command_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...mand_is_erro0/commands.txt'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 10}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:75: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == [
+            {"id": 2, "name": "Ada", "active": True},
+            {"id": 3, "name": "Linus", "active": False},
+        ]
+E       AssertionError: assert {'char_count'...rd_count': 14} == [{'active': T...me': 'Linus'}]
+E         
+E         Use -v to get more diff
+
+toy_tests/test_json_transformer.py:39: AssertionError
+__________________________ test_invalid_json_is_error __________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_invalid_json_is_error0')
+
+    def test_invalid_json_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "broken.json"
+        source.write_text("{not json", encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private..._json_is_error0/broken.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 9}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...must_be_array0/object.json'], returncode=0, stdout='{"line_count": 1, "word_count": 4, "char_count": 24}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...red_field_is0/missing.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 11}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+        parsed = json.loads(result.stdout)
+>       assert parsed == {
+            "line_count": 3,
+            "word_count": 3,
+            "char_count": 20,
+            "nonempty_line_count": 2,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 3} == {'char_count'...ord_count': 3}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 2}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:25: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert json.loads(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+            "nonempty_line_count": 0,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:40: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-29/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        parsed = json.loads(result.stdout)
+        assert parsed["line_count"] == 3
+        assert parsed["word_count"] == 1
+        assert parsed["char_count"] == 11
+>       assert parsed["nonempty_line_count"] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'nonempty_line_count'
+
+toy_tests/test_text_counter_repair_drill.py:59: KeyError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.84s
+stderr:
+<empty>
+
+[2026-05-21 22:00:47] TEST_RUN
+round: 3
+exit_code: 1
+stdout:
+FF..F.F.FF..FF..FFFF.                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_inventory_cli.py:40: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_inventory_cli.py:54: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_json_transformer.py:37: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "array" in result.stderr.lower()
+E       assert 'array' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 40,...y", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\ntypeerror: object of type \'namespace\' has no len()\n'
+E        +  where 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 40,...y", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\ntypeerror: object of type \'namespace\' has no len()\n' = <built-in method lower of str object at 0x10a6599b0>()
+E        +    where <built-in method lower of str object at 0x10a6599b0> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 40,...y", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 40,...y", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').stderr
+
+toy_tests/test_json_transformer.py:64: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_text_counter.py:29: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_text_counter.py:44: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_text_counter_extra.py:33: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_text_counter_extra.py:49: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_text_counter_extra.py:83: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:22: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:39: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-30/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...", line 32, in main\n    if len(args) != 1:\n       ~~~^^^^^^\nTypeError: object of type \'Namespace\' has no len()\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:54: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - assert 1 == 0
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - ass...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert '...
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - assert 1 == 0
+FAILED toy_tests/test_text_counter.py::test_empty_file - assert 1 == 0
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+12 failed, 9 passed in 0.89s
+stderr:
+<empty>
+
+[2026-05-21 22:01:20] TEST_RUN
+round: 4
+exit_code: 1
+stdout:
+FFFFFFFFFF..FF..F....                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "inventory": {"apple": 2, "banana": 2},
+            "totals": [7, 4],
+        }
+E       AssertionError: assert {'char_count'...rd_count': 11} == {'inventory':...tals': [7, 4]}
+E         
+E         Left contains 4 more items:
+E         {'char_count': 51, 'line_count': 5, 'nonempty_line_count': 5, 'word_count': 11}
+E         Right contains 2 more items:
+E         {'inventory': {'apple': 2, 'banana': 2}, 'totals': [7, 4]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:42: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {"inventory": {}, "totals": [0]}
+E       AssertionError: assert {'char_count'...ord_count': 7} == {'inventory':...'totals': [0]}
+E         
+E         Left contains 4 more items:
+E         {'char_count': 31, 'line_count': 3, 'nonempty_line_count': 3, 'word_count': 7}
+E         Right contains 2 more items:
+E         {'inventory': {}, 'totals': [0]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:55: AssertionError
+________________________ test_remove_too_many_is_error _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_remove_too_many_is_error0')
+
+    def test_remove_too_many_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple 1\nREMOVE apple 2\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...'], returncode=0, stdout='{"line_count": 2, "word_count": 6, "char_count": 27, "nonempty_line_count": 2}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:64: AssertionError
+_______________________ test_malformed_command_is_error ________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_malformed_command_is_erro0')
+
+    def test_malformed_command_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 10, "nonempty_line_count": 1}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:75: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == [
+            {"id": 2, "name": "Ada", "active": True},
+            {"id": 3, "name": "Linus", "active": False},
+        ]
+E       AssertionError: assert {'char_count'...rd_count': 14} == [{'active': T...me': 'Linus'}]
+E         
+E         Use -v to get more diff
+
+toy_tests/test_json_transformer.py:39: AssertionError
+__________________________ test_invalid_json_is_error __________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_invalid_json_is_error0')
+
+    def test_invalid_json_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "broken.json"
+        source.write_text("{not json", encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...n'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 9, "nonempty_line_count": 1}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...'], returncode=0, stdout='{"line_count": 1, "word_count": 4, "char_count": 24, "nonempty_line_count": 1}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 11, "nonempty_line_count": 1}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "line_count": 2,
+            "word_count": 3,
+            "char_count": 14,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 3} == {'char_count'...ord_count': 3}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 2}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter.py:31: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter.py:45: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 3,
+            "word_count": 4,
+            "char_count": len(content),
+        }
+
+toy_tests/test_text_counter_extra.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 3, "word_count": 4, "char_count": 22, "nonempty_line_count": 2}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 2,
+            "word_count": 1,
+            "char_count": 5,
+        }
+
+toy_tests/test_text_counter_extra.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 2, "word_count": 1, "char_count": 5, "nonempty_line_count": 1}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-31/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stdout.count("{") == 1
+        assert result.stdout.count("}") == 1
+>       parse_json_stdout(result.stdout)
+
+toy_tests/test_text_counter_extra.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 1, "word_count": 3, "char_count": 6, "nonempty_line_count": 1}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+13 failed, 8 passed in 0.86s
+stderr:
+<empty>
+
+[2026-05-21 22:01:56] TEST_RUN
+round: 5
+exit_code: 1
+stdout:
+FFFFFFFF.........FFF.                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "inventory": {"apple": 2, "banana": 2},
+            "totals": [7, 4],
+        }
+E       AssertionError: assert {'char_count'...rd_count': 11} == {'inventory':...tals': [7, 4]}
+E         
+E         Left contains 3 more items:
+E         {'char_count': 51, 'line_count': 5, 'word_count': 11}
+E         Right contains 2 more items:
+E         {'inventory': {'apple': 2, 'banana': 2}, 'totals': [7, 4]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:42: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {"inventory": {}, "totals": [0]}
+E       AssertionError: assert {'char_count'...ord_count': 7} == {'inventory':...'totals': [0]}
+E         
+E         Left contains 3 more items:
+E         {'char_count': 31, 'line_count': 3, 'word_count': 7}
+E         Right contains 2 more items:
+E         {'inventory': {}, 'totals': [0]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:55: AssertionError
+________________________ test_remove_too_many_is_error _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_remove_too_many_is_error0')
+
+    def test_remove_too_many_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple 1\nREMOVE apple 2\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...any_is_error0/commands.txt'], returncode=0, stdout='{"line_count": 2, "word_count": 6, "char_count": 27}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:64: AssertionError
+_______________________ test_malformed_command_is_error ________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_malformed_command_is_erro0')
+
+    def test_malformed_command_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...mand_is_erro0/commands.txt'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 10}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:75: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == [
+            {"id": 2, "name": "Ada", "active": True},
+            {"id": 3, "name": "Linus", "active": False},
+        ]
+E       AssertionError: assert {'char_count'...rd_count': 14} == [{'active': T...me': 'Linus'}]
+E         
+E         Use -v to get more diff
+
+toy_tests/test_json_transformer.py:39: AssertionError
+__________________________ test_invalid_json_is_error __________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_invalid_json_is_error0')
+
+    def test_invalid_json_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "broken.json"
+        source.write_text("{not json", encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private..._json_is_error0/broken.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 9}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...must_be_array0/object.json'], returncode=0, stdout='{"line_count": 1, "word_count": 4, "char_count": 24}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...red_field_is0/missing.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 11}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+        parsed = json.loads(result.stdout)
+>       assert parsed == {
+            "line_count": 3,
+            "word_count": 3,
+            "char_count": 20,
+            "nonempty_line_count": 2,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 3} == {'char_count'...ord_count': 3}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 2}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:25: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert json.loads(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+            "nonempty_line_count": 0,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:40: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-32/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        parsed = json.loads(result.stdout)
+        assert parsed["line_count"] == 3
+        assert parsed["word_count"] == 1
+        assert parsed["char_count"] == 11
+>       assert parsed["nonempty_line_count"] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'nonempty_line_count'
+
+toy_tests/test_text_counter_repair_drill.py:59: KeyError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.87s
+stderr:
+<empty>
+
+[2026-05-21 22:14:00] TEST_RUN
+round: 1
+exit_code: 0
+stdout:
+....                                                                     [100%]
+4 passed in 0.12s
+stderr:
+<empty>
+
+[2026-05-21 22:17:34] TEST_RUN
+round: 1
+exit_code: 1
+stdout:
+FF..                                                                     [100%]
+=================================== FAILURES ===================================
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-34/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter.py:29: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-34/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...                                     ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter.py:44: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+2 failed, 2 passed in 0.18s
+stderr:
+<empty>
+
+[2026-05-21 22:17:35] TEST_RUN
+round: 2
+exit_code: 0
+stdout:
+....                                                                     [100%]
+4 passed in 0.16s
+stderr:
+<empty>
+
+[2026-05-21 23:11:01] TEST_RUN
+round: 1
+exit_code: 1
+stdout:
+FFFFFFFFFFFFFFFFFFFFF                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "inventory": {"apple": 2, "banana": 2},
+            "totals": [7, 4],
+        }
+E       AssertionError: assert 0 == {'inventory': {'apple': 2, 'banana': 2}, 'totals': [7, 4]}
+E        +  where 0 = assert_json_only_stdout('0\n')
+E        +    where '0\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...0gn/T/pytest-of-khaledrahnama/pytest-36/test_inventory_commands0/commands.txt'], returncode=0, stdout='0\n', stderr='').stdout
+
+toy_tests/test_inventory_cli.py:42: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {"inventory": {}, "totals": [0]}
+E       AssertionError: assert 0 == {'inventory': {}, 'totals': [0]}
+E        +  where 0 = assert_json_only_stdout('0\n')
+E        +    where '0\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...ytest-of-khaledrahnama/pytest-36/test_zero_quantity_items_are_o0/commands.txt'], returncode=0, stdout='0\n', stderr='').stdout
+
+toy_tests/test_inventory_cli.py:55: AssertionError
+________________________ test_remove_too_many_is_error _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_remove_too_many_is_error0')
+
+    def test_remove_too_many_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple 1\nREMOVE apple 2\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...pytest-of-khaledrahnama/pytest-36/test_remove_too_many_is_error0/commands.txt'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:64: AssertionError
+_______________________ test_malformed_command_is_error ________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_malformed_command_is_erro0')
+
+    def test_malformed_command_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...ytest-of-khaledrahnama/pytest-36/test_malformed_command_is_erro0/commands.txt'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:75: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == [
+            {"id": 2, "name": "Ada", "active": True},
+            {"id": 3, "name": "Linus", "active": False},
+        ]
+E       AssertionError: assert 0 == [{'active': True, 'id': 2, 'name': 'Ada'}, {'active': False, 'id': 3, 'name': 'Linus'}]
+E        +  where 0 = assert_json_only_stdout('0\n')
+E        +    where '0\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private.../T/pytest-of-khaledrahnama/pytest-36/test_normalizes_json_objects0/items.json'], returncode=0, stdout='0\n', stderr='').stdout
+
+toy_tests/test_json_transformer.py:39: AssertionError
+__________________________ test_invalid_json_is_error __________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_invalid_json_is_error0')
+
+    def test_invalid_json_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "broken.json"
+        source.write_text("{not json", encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...n/T/pytest-of-khaledrahnama/pytest-36/test_invalid_json_is_error0/broken.json'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...00gn/T/pytest-of-khaledrahnama/pytest-36/test_root_must_be_array0/object.json'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...ytest-of-khaledrahnama/pytest-36/test_missing_required_field_is0/missing.json'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "line_count": 2,
+            "word_count": 3,
+            "char_count": 14,
+        }
+E       AssertionError: assert 0 == {'char_count': 14, 'line_count': 2, 'word_count': 3}
+E        +  where 0 = assert_json_only_stdout('0\n')
+E        +    where '0\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...c0000gn/T/pytest-of-khaledrahnama/pytest-36/test_counts_text_file0/sample.txt'], returncode=0, stdout='0\n', stderr='').stdout
+
+toy_tests/test_text_counter.py:31: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+        }
+E       AssertionError: assert 0 == {'char_count': 0, 'line_count': 0, 'word_count': 0}
+E        +  where 0 = assert_json_only_stdout('0\n')
+E        +    where '0\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...zmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_empty_file0/empty.txt'], returncode=0, stdout='0\n', stderr='').stdout
+
+toy_tests/test_text_counter.py:45: AssertionError
+________________________ test_missing_argument_is_error ________________________
+
+    def test_missing_argument_is_error() -> None:
+        result = run_program()
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_text_counter.py:55: AssertionError
+__________________________ test_missing_file_is_error __________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_missing_file_is_error0')
+
+    def test_missing_file_is_error(tmp_path: Path) -> None:
+        result = run_program(str(tmp_path / "missing.txt"))
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...n/T/pytest-of-khaledrahnama/pytest-36/test_missing_file_is_error0/missing.txt'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_text_counter.py:63: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 3,
+            "word_count": 4,
+            "char_count": len(content),
+        }
+
+toy_tests/test_text_counter_extra.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '0\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+               ^^^^^^^^^^^
+E       TypeError: 'int' object is not iterable
+
+toy_tests/test_text_counter_extra.py:21: TypeError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 2,
+            "word_count": 1,
+            "char_count": 5,
+        }
+
+toy_tests/test_text_counter_extra.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '0\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+               ^^^^^^^^^^^
+E       TypeError: 'int' object is not iterable
+
+toy_tests/test_text_counter_extra.py:21: TypeError
+__________________ test_rejects_extra_argument_without_stdout __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_rejects_extra_argument_wi0')
+
+    def test_rejects_extra_argument_without_stdout(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("hello\n", encoding="utf-8")
+    
+        result = run_program(str(sample), "extra")
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...f-khaledrahnama/pytest-36/test_rejects_extra_argument_wi0/sample.txt', 'extra'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_text_counter_extra.py:64: AssertionError
+__________________ test_rejects_directory_path_without_stdout __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_rejects_directory_path_wi0')
+
+    def test_rejects_directory_path_without_stdout(tmp_path: Path) -> None:
+        result = run_program(str(tmp_path))
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...jbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_rejects_directory_path_wi0'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_text_counter_extra.py:72: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert result.stdout.count("{") == 1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = <built-in method count of str object at 0x1087eb0f0>('{')
+E        +    where <built-in method count of str object at 0x1087eb0f0> = '0\n'.count
+E        +      where '0\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private.../pytest-of-khaledrahnama/pytest-36/test_output_is_single_json_val0/sample.txt'], returncode=0, stdout='0\n', stderr='').stdout
+
+toy_tests/test_text_counter_extra.py:84: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+        parsed = json.loads(result.stdout)
+>       assert parsed == {
+            "line_count": 3,
+            "word_count": 3,
+            "char_count": 20,
+            "nonempty_line_count": 2,
+        }
+E       AssertionError: assert 0 == {'char_count': 20, 'line_count': 3, 'nonempty_line_count': 2, 'word_count': 3}
+
+toy_tests/test_text_counter_repair_drill.py:25: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert json.loads(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+            "nonempty_line_count": 0,
+        }
+E       AssertionError: assert 0 == {'char_count': 0, 'line_count': 0, 'nonempty_line_count': 0, 'word_count': 0}
+E        +  where 0 = <function loads at 0x1079b4e00>('0\n')
+E        +    where <function loads at 0x1079b4e00> = json.loads
+E        +    and   '0\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...T/pytest-of-khaledrahnama/pytest-36/test_empty_file_has_zero_nonem0/empty.txt'], returncode=0, stdout='0\n', stderr='').stdout
+
+toy_tests/test_text_counter_repair_drill.py:40: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        parsed = json.loads(result.stdout)
+>       assert parsed["line_count"] == 3
+               ^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'int' object is not subscriptable
+
+toy_tests/test_text_counter_repair_drill.py:56: TypeError
+_________________ test_error_stays_on_stderr_for_missing_file __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-36/test_error_stays_on_stderr_for0')
+
+    def test_error_stays_on_stderr_for_missing_file(tmp_path: Path) -> None:
+        result = run_program(str(tmp_path / "missing.txt"))
+    
+>       assert result.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...pytest-of-khaledrahnama/pytest-36/test_error_stays_on_stderr_for0/missing.txt'], returncode=0, stdout='0\n', stderr='').returncode
+
+toy_tests/test_text_counter_repair_drill.py:65: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - Asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - Ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - Asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - Assertio...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter.py::test_missing_argument_is_error - Asser...
+FAILED toy_tests/test_text_counter.py::test_missing_file_is_error - Assertion...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_rejects_extra_argument_without_stdout
+FAILED toy_tests/test_text_counter_extra.py::test_rejects_directory_path_without_stdout
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+FAILED toy_tests/test_text_counter_repair_drill.py::test_error_stays_on_stderr_for_missing_file
+21 failed in 0.63s
+stderr:
+<empty>
+
+[2026-05-21 23:11:32] TEST_RUN
+round: 2
+exit_code: 1
+stdout:
+FFFFFFFFFFFFFFFFFF.FF                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "inventory": {"apple": 2, "banana": 2},
+            "totals": [7, 4],
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'inventory':...tals': [7, 4]}
+E         
+E         Left contains 4 more items:
+E         {'char_count': 0, 'line_count': 0, 'nonempty_line_count': 0, 'word_count': 0}
+E         Right contains 2 more items:
+E         {'inventory': {'apple': 2, 'banana': 2}, 'totals': [7, 4]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:42: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {"inventory": {}, "totals": [0]}
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'inventory':...'totals': [0]}
+E         
+E         Left contains 4 more items:
+E         {'char_count': 0, 'line_count': 0, 'nonempty_line_count': 0, 'word_count': 0}
+E         Right contains 2 more items:
+E         {'inventory': {}, 'totals': [0]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:55: AssertionError
+________________________ test_remove_too_many_is_error _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_remove_too_many_is_error0')
+
+    def test_remove_too_many_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple 1\nREMOVE apple 2\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...t'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:64: AssertionError
+_______________________ test_malformed_command_is_error ________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_malformed_command_is_erro0')
+
+    def test_malformed_command_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...t'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:75: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == [
+            {"id": 2, "name": "Ada", "active": True},
+            {"id": 3, "name": "Linus", "active": False},
+        ]
+E       AssertionError: assert {'char_count'...ord_count': 0} == [{'active': T...me': 'Linus'}]
+E         
+E         Use -v to get more diff
+
+toy_tests/test_json_transformer.py:39: AssertionError
+__________________________ test_invalid_json_is_error __________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_invalid_json_is_error0')
+
+    def test_invalid_json_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "broken.json"
+        source.write_text("{not json", encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...n'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...n'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...n'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "line_count": 2,
+            "word_count": 3,
+            "char_count": 14,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 3}
+E         
+E         Differing items:
+E         {'word_count': 0} != {'word_count': 3}
+E         {'line_count': 0} != {'line_count': 2}
+E         {'char_count': 0} != {'char_count': 14}
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter.py:31: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter.py:45: AssertionError
+________________________ test_missing_argument_is_error ________________________
+
+    def test_missing_argument_is_error() -> None:
+        result = run_program()
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter.py:55: AssertionError
+__________________________ test_missing_file_is_error __________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_missing_file_is_error0')
+
+    def test_missing_file_is_error(tmp_path: Path) -> None:
+        result = run_program(str(tmp_path / "missing.txt"))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...t'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter.py:63: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 3,
+            "word_count": 4,
+            "char_count": len(content),
+        }
+
+toy_tests/test_text_counter_extra.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 2,
+            "word_count": 1,
+            "char_count": 5,
+        }
+
+toy_tests/test_text_counter_extra.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+__________________ test_rejects_extra_argument_without_stdout __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_rejects_extra_argument_wi0')
+
+    def test_rejects_extra_argument_without_stdout(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("hello\n", encoding="utf-8")
+    
+        result = run_program(str(sample), "extra")
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...a'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter_extra.py:64: AssertionError
+__________________ test_rejects_directory_path_without_stdout __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_rejects_directory_path_wi0')
+
+    def test_rejects_directory_path_without_stdout(tmp_path: Path) -> None:
+        result = run_program(str(tmp_path))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...0'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter_extra.py:72: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stdout.count("{") == 1
+        assert result.stdout.count("}") == 1
+>       parse_json_stdout(result.stdout)
+
+toy_tests/test_text_counter_extra.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+        parsed = json.loads(result.stdout)
+>       assert parsed == {
+            "line_count": 3,
+            "word_count": 3,
+            "char_count": 20,
+            "nonempty_line_count": 2,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 3}
+E         
+E         Differing items:
+E         {'word_count': 0} != {'word_count': 3}
+E         {'nonempty_line_count': 0} != {'nonempty_line_count': 2}
+E         {'line_count': 0} != {'line_count': 3}
+E         {'char_count': 0} != {'char_count': 20}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:25: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        parsed = json.loads(result.stdout)
+>       assert parsed["line_count"] == 3
+E       assert 0 == 3
+
+toy_tests/test_text_counter_repair_drill.py:56: AssertionError
+_________________ test_error_stays_on_stderr_for_missing_file __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-37/test_error_stays_on_stderr_for0')
+
+    def test_error_stays_on_stderr_for_missing_file(tmp_path: Path) -> None:
+        result = run_program(str(tmp_path / "missing.txt"))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...t'], returncode=0, stdout='{"line_count": 0, "nonempty_line_count": 0, "word_count": 0, "char_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter_repair_drill.py:65: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter.py::test_missing_argument_is_error - asser...
+FAILED toy_tests/test_text_counter.py::test_missing_file_is_error - assert 0 ...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_rejects_extra_argument_without_stdout
+FAILED toy_tests/test_text_counter_extra.py::test_rejects_directory_path_without_stdout
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+FAILED toy_tests/test_text_counter_repair_drill.py::test_error_stays_on_stderr_for_missing_file
+20 failed, 1 passed in 0.71s
+stderr:
+<empty>
+
+[2026-05-21 23:12:03] TEST_RUN
+round: 3
+exit_code: 1
+stdout:
+FF..F.F.FFF.FF..FFFF.                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...test-38/test_inventory_commands0/commands.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_inventory_cli.py:40: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private.../test_zero_quantity_items_are_o0/commands.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_inventory_cli.py:54: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...t-38/test_normalizes_json_objects0/items.json'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_json_transformer.py:37: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "array" in result.stderr.lower()
+E       assert 'array' in "error: name 'json' is not defined\n"
+E        +  where "error: name 'json' is not defined\n" = <built-in method lower of str object at 0x10b3bd890>()
+E        +    where <built-in method lower of str object at 0x10b3bd890> = "Error: name 'json' is not defined\n".lower
+E        +      where "Error: name 'json' is not defined\n" = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...ytest-38/test_root_must_be_array0/object.json'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").stderr
+
+toy_tests/test_json_transformer.py:64: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...a/pytest-38/test_counts_text_file0/sample.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_text_counter.py:29: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...drahnama/pytest-38/test_empty_file0/empty.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_text_counter.py:44: AssertionError
+________________________ test_missing_argument_is_error ________________________
+
+    def test_missing_argument_is_error() -> None:
+        result = run_program()
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "usage" in result.stderr.lower() or "argument" in result.stderr.lower()
+E       assert ('usage' in "error: name 'json' is not defined\n" or 'argument' in "error: name 'json' is not defined\n")
+E        +  where "error: name 'json' is not defined\n" = <built-in method lower of str object at 0x10b3be970>()
+E        +    where <built-in method lower of str object at 0x10b3be970> = "Error: name 'json' is not defined\n".lower
+E        +      where "Error: name 'json' is not defined\n" = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").stderr
+E        +  and   "error: name 'json' is not defined\n" = <built-in method lower of str object at 0x10b3be970>()
+E        +    where <built-in method lower of str object at 0x10b3be970> = "Error: name 'json' is not defined\n".lower
+E        +      where "Error: name 'json' is not defined\n" = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").stderr
+
+toy_tests/test_text_counter.py:57: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...-38/test_counts_unicode_tabs_blank0/mixed.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_text_counter_extra.py:33: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private.../test_counts_trailing_newline_c0/trailing.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_text_counter_extra.py:49: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...38/test_output_is_single_json_val0/sample.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_text_counter_extra.py:83: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...38/test_requires_nonempty_line_co0/sample.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_text_counter_repair_drill.py:22: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...-38/test_empty_file_has_zero_nonem0/empty.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_text_counter_repair_drill.py:39: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-38/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...38/test_whitespace_only_lines_are0/spaces.txt'], returncode=1, stdout='', stderr="Error: name 'json' is not defined\n").returncode
+
+toy_tests/test_text_counter_repair_drill.py:54: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - assert 1 == 0
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - ass...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert '...
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - assert 1 == 0
+FAILED toy_tests/test_text_counter.py::test_empty_file - assert 1 == 0
+FAILED toy_tests/test_text_counter.py::test_missing_argument_is_error - asser...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+13 failed, 8 passed in 0.58s
+stderr:
+<empty>
+
+[2026-05-21 23:12:29] TEST_RUN
+round: 4
+exit_code: 1
+stdout:
+FF..F.F.FFF.FF..FFFF.                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_inventory_cli.py:40: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_inventory_cli.py:54: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_json_transformer.py:37: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "array" in result.stderr.lower()
+E       assert 'array' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"error: {e}\\n")\n    ^^^\nnameerror: name \'sys\' is not defined. did you forget to import \'sys\'?\n'
+E        +  where 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"error: {e}\\n")\n    ^^^\nnameerror: name \'sys\' is not defined. did you forget to import \'sys\'?\n' = <built-in method lower of str object at 0xa0603e100>()
+E        +    where <built-in method lower of str object at 0xa0603e100> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').stderr
+
+toy_tests/test_json_transformer.py:64: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter.py:29: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter.py:44: AssertionError
+________________________ test_missing_argument_is_error ________________________
+
+    def test_missing_argument_is_error() -> None:
+        result = run_program()
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "usage" in result.stderr.lower() or "argument" in result.stderr.lower()
+E       assert ('usage' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"error: {e}\\n")\n    ^^^\nnameerror: name \'sys\' is not defined. did you forget to import \'sys\'?\n' or 'argument' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"error: {e}\\n")\n    ^^^\nnameerror: name \'sys\' is not defined. did you forget to import \'sys\'?\n')
+E        +  where 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"error: {e}\\n")\n    ^^^\nnameerror: name \'sys\' is not defined. did you forget to import \'sys\'?\n' = <built-in method lower of str object at 0xa0603f300>()
+E        +    where <built-in method lower of str object at 0xa0603f300> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py'], returnco....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').stderr
+E        +  and   'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"error: {e}\\n")\n    ^^^\nnameerror: name \'sys\' is not defined. did you forget to import \'sys\'?\n' = <built-in method lower of str object at 0xa0603f300>()
+E        +    where <built-in method lower of str object at 0xa0603f300> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider2/workspace/solution.py", line 5, ...s.stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py'], returnco....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').stderr
+
+toy_tests/test_text_counter.py:57: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:33: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:49: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:83: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:22: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:39: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-39/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private....stderr.write(f"Error: {e}\\n")\n    ^^^\nNameError: name \'sys\' is not defined. Did you forget to import \'sys\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:54: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - assert 1 == 0
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - ass...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert '...
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - assert 1 == 0
+FAILED toy_tests/test_text_counter.py::test_empty_file - assert 1 == 0
+FAILED toy_tests/test_text_counter.py::test_missing_argument_is_error - asser...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+13 failed, 8 passed in 0.90s
+stderr:
+<empty>
+
+[2026-05-21 23:12:30] TEST_RUN
+round: 5
+exit_code: 1
+stdout:
+FFFFFFFFFFFFFFFFFFFFF                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "inventory": {"apple": 2, "banana": 2},
+            "totals": [7, 4],
+        }
+E       AssertionError: assert {'nonempty_line_count': 0} == {'inventory':...tals': [7, 4]}
+E         
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Right contains 2 more items:
+E         {'inventory': {'apple': 2, 'banana': 2}, 'totals': [7, 4]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:42: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {"inventory": {}, "totals": [0]}
+E       AssertionError: assert {'nonempty_line_count': 0} == {'inventory':...'totals': [0]}
+E         
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Right contains 2 more items:
+E         {'inventory': {}, 'totals': [0]}
+E         Use -v to get more diff
+
+toy_tests/test_inventory_cli.py:55: AssertionError
+________________________ test_remove_too_many_is_error _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_remove_too_many_is_error0')
+
+    def test_remove_too_many_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple 1\nREMOVE apple 2\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...ytest-40/test_remove_too_many_is_error0/commands.txt'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:64: AssertionError
+_______________________ test_malformed_command_is_error ________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_malformed_command_is_erro0')
+
+    def test_malformed_command_is_error(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD apple\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...test-40/test_malformed_command_is_erro0/commands.txt'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_inventory_cli.py:75: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == [
+            {"id": 2, "name": "Ada", "active": True},
+            {"id": 3, "name": "Linus", "active": False},
+        ]
+E       AssertionError: assert {'nonempty_line_count': 0} == [{'active': T...me': 'Linus'}]
+E         
+E         Use -v to get more diff
+
+toy_tests/test_json_transformer.py:39: AssertionError
+__________________________ test_invalid_json_is_error __________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_invalid_json_is_error0')
+
+    def test_invalid_json_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "broken.json"
+        source.write_text("{not json", encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...ma/pytest-40/test_invalid_json_is_error0/broken.json'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...hnama/pytest-40/test_root_must_be_array0/object.json'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...test-40/test_missing_required_field_is0/missing.json'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert assert_json_only_stdout(result.stdout) == {
+            "line_count": 2,
+            "word_count": 3,
+            "char_count": 14,
+        }
+E       AssertionError: assert {'nonempty_line_count': 0} == {'char_count'...ord_count': 3}
+E         
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Right contains 3 more items:
+E         {'char_count': 14, 'line_count': 2, 'word_count': 3}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter.py:31: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert assert_json_only_stdout(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+        }
+E       AssertionError: assert {'nonempty_line_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Right contains 3 more items:
+E         {'char_count': 0, 'line_count': 0, 'word_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter.py:45: AssertionError
+________________________ test_missing_argument_is_error ________________________
+
+    def test_missing_argument_is_error() -> None:
+        result = run_program()
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter.py:55: AssertionError
+__________________________ test_missing_file_is_error __________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_missing_file_is_error0')
+
+    def test_missing_file_is_error(tmp_path: Path) -> None:
+        result = run_program(str(tmp_path / "missing.txt"))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...ma/pytest-40/test_missing_file_is_error0/missing.txt'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter.py:63: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 3,
+            "word_count": 4,
+            "char_count": len(content),
+        }
+
+toy_tests/test_text_counter_extra.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"nonempty_line_count": 0}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'nonempty_line_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Extra items in the right set:
+E         'line_count'
+E         'char_count'
+E         'word_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 2,
+            "word_count": 1,
+            "char_count": 5,
+        }
+
+toy_tests/test_text_counter_extra.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"nonempty_line_count": 0}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'nonempty_line_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Extra items in the right set:
+E         'line_count'
+E         'char_count'
+E         'word_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+__________________ test_rejects_extra_argument_without_stdout __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_rejects_extra_argument_wi0')
+
+    def test_rejects_extra_argument_without_stdout(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("hello\n", encoding="utf-8")
+    
+        result = run_program(str(sample), "extra")
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private.../test_rejects_extra_argument_wi0/sample.txt', 'extra'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter_extra.py:64: AssertionError
+__________________ test_rejects_directory_path_without_stdout __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_rejects_directory_path_wi0')
+
+    def test_rejects_directory_path_without_stdout(tmp_path: Path) -> None:
+        result = run_program(str(tmp_path))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...ledrahnama/pytest-40/test_rejects_directory_path_wi0'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter_extra.py:72: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stdout.count("{") == 1
+        assert result.stdout.count("}") == 1
+>       parse_json_stdout(result.stdout)
+
+toy_tests/test_text_counter_extra.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"nonempty_line_count": 0}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'nonempty_line_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Extra items in the right set:
+E         'line_count'
+E         'char_count'
+E         'word_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+        parsed = json.loads(result.stdout)
+>       assert parsed == {
+            "line_count": 3,
+            "word_count": 3,
+            "char_count": 20,
+            "nonempty_line_count": 2,
+        }
+E       AssertionError: assert {'nonempty_line_count': 0} == {'char_count'...ord_count': 3}
+E         
+E         Differing items:
+E         {'nonempty_line_count': 0} != {'nonempty_line_count': 2}
+E         Right contains 3 more items:
+E         {'char_count': 20, 'line_count': 3, 'word_count': 3}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:25: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert json.loads(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+            "nonempty_line_count": 0,
+        }
+E       AssertionError: assert {'nonempty_line_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Right contains 3 more items:
+E         {'char_count': 0, 'line_count': 0, 'word_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:40: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        parsed = json.loads(result.stdout)
+>       assert parsed["line_count"] == 3
+               ^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'line_count'
+
+toy_tests/test_text_counter_repair_drill.py:56: KeyError
+_________________ test_error_stays_on_stderr_for_missing_file __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-40/test_error_stays_on_stderr_for0')
+
+    def test_error_stays_on_stderr_for_missing_file(tmp_path: Path) -> None:
+        result = run_program(str(tmp_path / "missing.txt"))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider2/.venv/bin/python', 'workspace/solution.py', '/private...ytest-40/test_error_stays_on_stderr_for0/missing.txt'], returncode=0, stdout='{"nonempty_line_count": 0}\n', stderr='').returncode
+
+toy_tests/test_text_counter_repair_drill.py:65: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter.py::test_missing_argument_is_error - asser...
+FAILED toy_tests/test_text_counter.py::test_missing_file_is_error - assert 0 ...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_rejects_extra_argument_without_stdout
+FAILED toy_tests/test_text_counter_extra.py::test_rejects_directory_path_without_stdout
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+FAILED toy_tests/test_text_counter_repair_drill.py::test_error_stays_on_stderr_for_missing_file
+21 failed in 0.68s
+stderr:
+<empty>
+

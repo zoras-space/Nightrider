@@ -1,33 +1,30 @@
-import sys
 import json
+import sys
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python3 text_counter.py <path_to_text_file>", file=sys.stderr)
-        sys.exit(1)
-
-    file_path = sys.argv[1]
     try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            content = file.read()
-            line_count = len(content.splitlines())
-            word_count = len(content.split())
-            char_count = len(content)
-            nonempty_line_count = len([line for line in content.splitlines() if line.strip()])
-    except FileNotFoundError:
-        print(f"Error reading file: {file_path} does not exist", file=sys.stderr)
-        sys.exit(2)
-    except PermissionError:
-        print(f"Error reading file: Permission denied for {file_path}", file=sys.stderr)
-        sys.exit(2)
-
-    result = {
-        "line_count": line_count,
-        "word_count": word_count,
-        "char_count": char_count,
-        "nonempty_line_count": nonempty_line_count,  # Add this line
-    }
-    print(json.dumps(result))
+        input_data = sys.stdin.read()
+        lines = input_data.splitlines()
+        
+        # Count lines containing "No Rows"
+        no_rows_count = sum(1 for line in lines if "No Rows" in line.strip())
+        
+        # Calculate other counts
+        total_lines = len(lines)
+        word_count = sum(len(line.split()) for line in lines)
+        char_count = sum(len(line) for line in lines)
+        
+        result = {
+            "nonempty_line_count": no_rows_count,
+            "line_count": total_lines,
+            "word_count": word_count,
+            "char_count": char_count,
+        }
+        
+        print(json.dumps(result))
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

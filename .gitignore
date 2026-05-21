@@ -4,5 +4,13 @@ __pycache__/
 *$py.class
 .pytest_cache/
 
-agent_logs/dashboard_server.log
 workspace/*.bak
+/agent_logs/*.log
+/temps/*.log
+/test_results/*.log
+/test_runner
+/expected_outputs
+/public_tests
+/secret_spec
+
+
