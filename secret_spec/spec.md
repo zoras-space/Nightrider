@@ -8,4 +8,3 @@ Expected usage:
 
 ```bash
 python3 knit.py compile secret_spec/spec.md
-```

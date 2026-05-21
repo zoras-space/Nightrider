@@ -54,6 +54,7 @@ Nightrider is a local autonomous coding-agent pipeline.
 - `dashboard.py` provides a lightweight local monitoring UI.
 
 The system operates in iterative rounds:
+
 1. Read spec
 2. Plan implementation
 3. Generate code
@@ -80,10 +81,13 @@ pytest toy_tests/test_json_transformer.py -q
 pytest toy_tests/test_inventory_cli.py -q
 ```
 
-Final public readiness status:
-- Framework smoke tests passing
+Current readiness status:
+
 - Autonomous repair loop operational
+- Failure detection operational
+- Retry pipeline operational
 - Logging system operational
+- Local CLI entrypoint operational
 
 ---
 
@@ -93,9 +97,74 @@ Final public readiness status:
 - Toy specs are independent and should not be expected to pass simultaneously with the same generated solution.
 - Hidden-spec performance depends on local model quality and reveal-time task complexity.
 - Extremely large specs or long-running test suites may require increased iteration limits.
+- Repeated identical failures trigger escalation logic but may still require improved prompting.
 
 ---
 
 ## Readiness Checkpoint Reference
 
 Checkpoint tag: `agent-readiness-1945`
+
+---
+
+## Running on Another Computer
+
+Nightrider is portable. A new machine needs:
+
+- Python 3.10+
+- `pip`
+- Dependencies from `requirements.txt`
+- Ollama only for real model-driven runs
+
+```bash
+cd nightrider
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python3 agent/run_agent.py --init-logs
+```
+
+---
+
+## Repository Structure
+
+```text
+nightrider/
+  README.md
+  knit.py
+  requirements.txt
+  agent_manifest.json
+  agent/
+  workspace/
+  toy_specs/
+  toy_tests/
+  secret_spec/
+  agent_logs/
+```
+
+---
+
+## Logging and Compliance
+
+All required log files are created under `agent_logs/`:
+
+- `prompts.log`
+- `decisions.log`
+- `commands.log`
+- `test_runs.log`
+- `errors.log`
+- `human_interventions.log`
+- `final_report.md`
+
+Every log entry includes timestamps.
+
+---
+
+## Final Submission Checklist
+
+- `README.md` includes command, setup, architecture, tests, and checkpoint reference.
+- `knit.py` provides the required competition command shape.
+- `agent_manifest.json` discloses local model usage.
+- `workspace/solution.py` contains the generated solution.
+- `agent_logs/` contains prompts, decisions, commands, tests, errors, interventions, and final report.
+- No paid API keys or secrets are included.
