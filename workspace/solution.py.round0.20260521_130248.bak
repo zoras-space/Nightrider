@@ -1,0 +1,33 @@
+import sys
+import json
+
+def count_file_stats(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+            line_count = len(lines)
+            word_count = sum(len(line.split()) for line in lines)
+            char_count = sum(len(line) for line in lines)
+            return {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count
+            }
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: python script.py <path_to_text_file>", file=sys.stderr)
+        sys.exit(1)
+
+    file_path = sys.argv[1]
+    stats = count_file_stats(file_path)
+    print(json.dumps(stats))
+
+if __name__ == "__main__":
+    main()

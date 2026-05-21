@@ -1,0 +1,15 @@
+"""Placeholder solution for Nightrider-generated challenge code."""
+
+from __future__ import annotations
+
+import sys
+
+
+def main() -> int:
+    print("No solution has been generated yet.", file=sys.stderr)
+    return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+

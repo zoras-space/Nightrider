@@ -1,0 +1,39 @@
+import argparse
+import json
+import sys
+
+def count_metrics(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            lines = content.splitlines()
+            line_count = len(lines)
+            word_count = sum(len(line.split()) for line in lines)
+            char_count = sum(len(line) for line in lines)
+            return {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count
+            }
+    except FileNotFoundError:
+        print("Error: File not found.", file=sys.stderr)
+        sys.exit(2)
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(2)
+
+def main():
+    parser = argparse.ArgumentParser(description="Text Counter")
+    parser.add_argument('path_to_text_file', type=str, help='Path to the UTF-8 text file')
+    
+    args = parser.parse_args()
+    
+    if len(args.path_to_text_file) != 1:
+        print("Error: Exactly one argument is required.", file=sys.stderr)
+        sys.exit(1)
+    
+    metrics = count_metrics(args.path_to_text_file)
+    print(json.dumps(metrics))
+
+if __name__ == "__main__":
+    main()

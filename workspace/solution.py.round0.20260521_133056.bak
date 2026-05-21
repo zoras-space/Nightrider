@@ -1,0 +1,29 @@
+import sys
+import json
+
+def count_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            line_count = len(content.splitlines())
+            word_count = len(content.split())
+            char_count = len(content)
+            return {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count
+            }
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python solution.py <path_to_text_file>", file=sys.stderr)
+        sys.exit(1)
+
+    result = count_text(sys.argv[1])
+    print(json.dumps(result))

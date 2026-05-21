@@ -1,0 +1,1 @@
+The program accepts one file path, reads UTF-8 text, prints JSON with line_count, word_count, and char_count, keeps stdout clean, and reports argument/read errors to stderr.
