@@ -13,7 +13,7 @@ def main():
             line_count = len(content.splitlines())
             word_count = len(content.split())
             char_count = len(content)
-            nonempty_line_count = len([line for line in content.splitlines() if line.strip()])
+            nonempty_line_count = sum(1 for line in content.splitlines() if line.strip())
     except FileNotFoundError:
         print(f"Error reading file: {file_path} does not exist", file=sys.stderr)
         sys.exit(2)
@@ -25,7 +25,7 @@ def main():
         "line_count": line_count,
         "word_count": word_count,
         "char_count": char_count,
-        "nonempty_line_count": nonempty_line_count,  # Add this line
+        "nonempty_line_count": nonempty_line_count,
     }
     print(json.dumps(result))
 
