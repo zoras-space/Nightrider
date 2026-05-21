@@ -1,0 +1,38 @@
+
+[2026-05-21 16:15] TEST_RUN:
+============================================================
+  Running 8 tests  [public suite]
+  Program: python3 solution.py
+============================================================
+
+  ✓ PASS  empty_json_object                               37.1ms  [smoke] [json]
+  ✓ PASS  json_string_value                               35.7ms  [smoke] [json]
+  ✓ PASS  json_number                                     35.4ms  [smoke] [json]
+  ✓ PASS  json_array                                      37.2ms  [json] [array]
+  ✓ PASS  plain_text_passthrough                          35.4ms  [text]
+  ✓ PASS  plain_text_multiline                            35.8ms  [text]
+  ✓ PASS  empty_input_exits_nonzero                       34.0ms  [error] [edge]
+  ✓ PASS  whitespace_only_exits_nonzero                   35.3ms  [error] [edge]
+
+============================================================
+  Score: 80/80  (8/8 tests passed)
+============================================================
+
+[2026-05-21 16:15] TEST_RUN:
+============================================================
+  Running 8 tests  [public suite]
+  Program: python3 solution.py
+============================================================
+
+  ✓ PASS  empty_json_object                               38.6ms  [smoke] [json]
+  ✓ PASS  json_string_value                               38.4ms  [smoke] [json]
+  ✓ PASS  json_number                                     37.0ms  [smoke] [json]
+  ✓ PASS  json_array                                      37.3ms  [json] [array]
+  ✓ PASS  plain_text_passthrough                          39.5ms  [text]
+  ✓ PASS  plain_text_multiline                            35.1ms  [text]
+  ✓ PASS  empty_input_exits_nonzero                       37.4ms  [error] [edge]
+  ✓ PASS  whitespace_only_exits_nonzero                   35.6ms  [error] [edge]
+
+============================================================
+  Score: 80/80  (8/8 tests passed)
+============================================================

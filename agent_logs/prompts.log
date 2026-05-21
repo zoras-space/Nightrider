@@ -1,0 +1,38 @@
+
+[2026-05-21 16:15] USER_PROMPT:
+You are a competition programmer.
+Read this specification and create a numbered implementation plan.
+Do NOT write any code yet. Just plan.
+
+SPECIFICATION:
+# Toy Task: Number Doubler
+
+Read a JSON object with a key "number".
+Output a JSON object with a key "result" containing that number multiplied by 2.
+
+Example input:  {"number": 5}
+Example output: {"result": 10}
+
+Exit code 0 on success, 1 on invalid input.
+
+
+Output a numbered list of implementation steps only.
+
+[2026-05-21 16:15] USER_PROMPT:
+You are a competition programmer. Output ONLY valid Python 3. No explanation.
+No markdown fences. No extra text before or after the code.
+
+SPECIFICATION:
+# Toy Task: Number Doubler
+
+Read a JSON object with a key "number".
+Output a JSON object with a key "result" containing that number multiplied by 2.
+
+Example input:  {"number": 5}
+Example output: {"result": 10}
+
+Exit code 0 on success, 1 on invalid input.
+
+
+CURRENT solution.py (infrastructure — do not change read_input, parse_input signature, 
+...
