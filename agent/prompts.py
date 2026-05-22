@@ -1,163 +1,148 @@
-"""Prompt templates for Nightrider agent (schema-first version)."""
-
-SPEC_SUMMARY_PROMPT = """You are a strict spec extraction engine for a CLI compiler task.
-
-Your job is NOT to explain the spec.
-Your job is to extract a machine-usable contract.
-
-You MUST output:
-
-1. REQUIRED CLI COMMAND
-2. REQUIRED OUTPUT JSON SCHEMA (STRICT)
-3. REQUIRED FIELDS (list all JSON keys)
-4. VALIDATION RULES
-5. ERROR CONDITIONS
-6. EDGE CASES
-7. FORBIDDEN OUTPUT BEHAVIOR (very important)
-
-Be precise. Do NOT hallucinate extra fields.
-
-SPEC:
-{spec}
-
-STATIC ANALYSIS:
-{static_analysis}
 """
 
-IMPLEMENTATION_PLAN_PROMPT = """You are a senior compiler engineer building a CLI program.
 
-You MUST follow this rule:
+EXPECTED_OUTPUT_BATCH_PROMPT = """You are generating official-style expected-output JSON for multiple Knitting Compiler tests.
 
-👉 The output JSON schema is a HARD CONTRACT. Never deviate.
+For each test, produce exactly one JSON object matching the expected-output wrapper schema.
+Return a JSON object whose keys are test IDs and whose values are expected-output wrapper objects.
+Do not include Markdown.
+Do not explain.
 
-Before writing code, explicitly define:
+{schema_prompt}
 
-1. FINAL JSON SCHEMA (must match spec exactly)
-2. REQUIRED OUTPUT KEYS (mandatory)
-3. OPTIONAL KEYS (if any)
-4. DEFAULT VALUES
-5. ERROR HANDLING STRATEGY
-6. PARSING STRATEGY
-7. EXECUTION FLOW
+Specification or relevant excerpt:
+{spec}
 
-Then write a deterministic implementation plan.
+Official expected-output examples:
+{examples}
 
-IMPORTANT RULES:
-- stdout = ONLY JSON
-- stderr = logs/errors only
-- exit codes must match spec
-- missing field = immediate failure risk
+Tests:
+{tests}
 
-SPEC SUMMARY:
+Return JSON only.
+"""
+
+
+# Compatibility names used by the existing Nightrider agent loop.
+# They now steer the model toward expected-output generation instead of code repair.
+
+SPEC_SUMMARY_PROMPT = """You are Nightrider preparing to generate expected-output JSON files.
+
+Extract the output contract from the specification:
+- wrapper schema
+- stdout schema for valid cases
+- stdout schema for invalid cases
+- exit code rules
+- expanded row schema
+- error object schema
+- line and row numbering rules
+- normalization rules
+- ordering rules
+
+Specification:
+{spec}
+"""
+
+IMPLEMENTATION_PLAN_PROMPT = """Create a concise plan for generating expected-output JSON from test metadata and .knit input files.
+
+The plan must include:
+- how to read metadata
+- how to parse the .knit input
+- how to compute valid stdout
+- how to collect errors
+- how to match official examples
+- how to self-check and repair JSON output
+
+Spec summary:
 {summary}
 """
 
-INITIAL_CODE_PROMPT = """You are generating a production-grade CLI solution.
+INITIAL_CODE_PROMPT = """You are not writing compiler code.
 
-CRITICAL RULES:
-- Output EXACTLY ONE JSON object to stdout
-- NO debug prints
-- NO extra text
-- NO logging to stdout
-- stderr allowed for errors only
-- MUST match schema exactly
+Generate an expected-output JSON document in the official format.
+Return JSON only.
+Do not include Python.
+Do not include Markdown.
 
-Before coding, ensure:
-- every required JSON field exists
-- field names match spec EXACTLY
-- no missing keys like 'nonempty_line_count'
-- all imports are valid
-
-SPEC:
+Specification:
 {spec}
 
-PLAN:
+Plan:
 {plan}
-
-Return ONLY Python code for {program_path}.
 """
 
-FAILURE_ANALYSIS_PROMPT = """You are debugging a failing CLI compiler.
+FAILURE_ANALYSIS_PROMPT = """Analyze why the generated expected-output JSON failed validation.
 
-You must identify the EXACT root cause.
+Classify the failure as one of:
+- invalid JSON
+- wrong wrapper schema
+- wrong stdout schema
+- wrong exit code
+- wrong expanded rows
+- wrong error list
+- wrong line or row number
+- wrong field order or extra field
+- unknown
 
-Classify into:
-- missing_field
-- wrong_output_schema
-- parsing_error
-- runtime_crash
-- exit_code_error
-- logic_error
+Be concise.
 
-IMPORTANT:
-If output is missing a field (e.g. nonempty_line_count), ALWAYS classify as:
-→ wrong_output_schema
-
-SPEC SUMMARY:
+Spec summary:
 {summary}
 
-CODE:
+Current output:
 {code}
 
-COMMAND:
+Validation command:
 {command}
 
-EXIT CODE:
-{exit_code}
+Exit code: {exit_code}
 
-STDOUT:
+Stdout:
 {stdout}
 
-STDERR:
+Stderr:
 {stderr}
 
-FAILURE HISTORY:
+Previous failure memory:
 {failure_memory}
 
-SCORES:
+Visible score memory:
 {score_memory}
 """
 
-PATCH_PROMPT = """You are fixing a failing CLI program.
+PATCH_PROMPT = """Repair the generated expected-output JSON.
 
-RULES:
-- Fix ONLY the root cause
-- Do NOT rewrite unrelated parts
-- Ensure output JSON matches schema EXACTLY
-- Missing fields are NOT allowed under any condition
+Return JSON only.
+Do not include Markdown.
+Do not explain.
+Patch only what the feedback requires.
 
-COMMON FAILURE FIXES:
-- missing field → add field in JSON output
-- wrong key name → rename key exactly
-- runtime crash → fix import / variable
-
-SPEC SUMMARY:
+Spec summary:
 {summary}
 
-CURRENT CODE:
+Current output:
 {code}
 
-FAILURE ANALYSIS:
+Failure analysis:
 {failure_analysis}
 
-LATEST STDOUT:
+Latest validation stdout:
 {stdout}
 
-LATEST STDERR:
+Latest validation stderr:
 {stderr}
-
-Return ONLY full corrected Python code for {program_path}.
 """
 
-FINAL_REPORT_PROMPT = """You are writing a concise final engineering report.
+FINAL_REPORT_PROMPT = """Write a concise Markdown report for the expected-output generation run.
 
 Include:
-- success/failure
-- failure categories
-- schema issues encountered
-- repair effectiveness
+- model used
+- inputs used
+- examples used
+- validation strategy
+- failures corrected
 - remaining risks
 
-RUN CONTEXT:
+Run context:
 {run_context}
 """
