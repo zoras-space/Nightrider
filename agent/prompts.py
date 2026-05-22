@@ -1,292 +1,238 @@
-"""Prompt templates for the Knitting Pattern DSL Compiler."""
+"""Prompt templates for the Nightrider Night Drive Loop (strict compiler mode)."""
 
-SSPEC_SUMMARY_PROMPT = """You are Nightrider. The tool reads a file and prints JSON statistics to stdout.
+# =========================================================
+# SPEC SUMMARY (STRICT EXTRACTION MODE)
+# =========================================================
 
-The problem changes depending on the file extension or content pattern:
-- .txt files: Count lines, words, characters → output {"line_count": int, "word_count": int, "char_count": int}
-- commands.txt: Process ADD/REMOVE/TOTAL commands → output {"inventory": {...}, "totals": [...]}
-- .json files: Transform objects (strip names, add active=False default) → output array of transformed objects
+SPEC_SUMMARY_PROMPT = """
+You are a STRICT compiler specification extractor.
 
-CRITICAL:
-The visible task description may be incomplete.
-Hidden tests may require additional fields, edge cases, validation rules,
-or exact CLI/output behavior not obvious from the short summary.
+Your job is to convert a natural-language spec into machine-enforceable rules.
 
-You MUST aggressively infer:
-- hidden required JSON fields (NEVER add extra fields like nonempty_line_count)
-- strict schema matching (exactly the fields shown in examples)
-- exact exit code behavior (0 on success, 1 on argument/file errors)
-- malformed input handling (syntax errors → exit 1)
-- stdout/stderr separation (JSON only on stdout, errors on stderr)
-- ordering requirements (preserve input order for inventory items)
-- duplicate handling (inventory commands)
-- edge cases (empty files, missing fields, invalid quantities)
-- validation logic (REMOVE too many → error, malformed command → error)
+You MUST extract ONLY actionable constraints.
 
-Return a structured summary with these exact headings:
+DO NOT add commentary. DO NOT summarize casually.
 
-- Required command
-- Arguments
-- Input format
-- Output format
-- Required JSON fields
-- Exit codes
-- Error behavior
-- Validation rules
-- Edge cases
-- Hidden test risks
-- Likely failure points
+Return a structured analysis containing:
 
-Specification:
+1. CLI format (exact command structure)
+2. Input format rules
+3. Output JSON schema (ALL required fields)
+4. Field-level constraints
+5. Error conditions
+6. Exit code rules
+7. Edge cases
+8. Forbidden behaviors
+
+HARD RULES:
+- If JSON output fields exist, list EVERY field explicitly.
+- If a field is optional or nullable, explicitly mark it.
+- If stdout rules exist, restate them exactly.
+- If errors exist, enumerate ALL error codes.
+- Ignore storytelling or domain flavor.
+
+SPECIFICATION:
 {spec}
+
+STATIC ANALYSIS:
+{static_analysis}
 """
 
-IMPLEMENTATION_PLAN_PROMPT = """You are Nightrider planning a Python CLI implementation.
 
-You are building against hidden tests.
+# =========================================================
+# IMPLEMENTATION PLAN (DETERMINISTIC)
+# =========================================================
 
-The visible examples are NOT sufficient.
+IMPLEMENTATION_PLAN_PROMPT = """
+You are a deterministic Python 3.10 implementation planner.
 
-You MUST design for:
-- strict parser correctness
-- exact JSON schema matching
-- hidden required fields
-- deterministic ordering
-- malformed input recovery
-- exit code correctness
-- stderr/stdout separation
-- edge-case handling
-- duplicate detection
-- robust validation
+You must produce a step-by-step plan that a compiler backend could execute.
 
-Do not simplify the spec.
+RULES:
+- No vague steps
+- No optional behavior
+- No multiple approaches
+- Prefer simplest correct solution
+- Avoid overengineering
 
-Keep stdout completely clean.
-Only required machine-readable output belongs on stdout.
-
-Use stderr for diagnostics.
-
-Prefer standard library only.
-
-Return a concise but rigorous implementation plan with these headings:
-
-- Parser architecture
-- Validation pipeline
-- Internal data structures
-- JSON schema strategy
+Required sections:
+- CLI parsing strategy
+- Input parsing strategy
+- Output construction strategy
+- Validation strategy
 - Error handling strategy
-- Simulation strategy
-- Repeat expansion strategy
-- Output strategy
 - Exit code strategy
-- Hidden test defense strategy
-- Test strategy
-- Risks to watch
+- Edge case handling
 
-Spec summary:
+IMPORTANT:
+This plan is NOT creative. It is a blueprint for exact implementation.
+
+Spec Summary:
 {summary}
 """
 
 
-INITIAL_CODE_PROMPT = """You are Nightrider writing the initial solution file for a CLI programming challenge.
+# =========================================================
+# INITIAL CODE GENERATION (STRICT COMPILER MODE)
+# =========================================================
 
-Return ONLY the complete Python source for {program_path}.
+INITIAL_CODE_PROMPT = """
+You are a STRICT Python 3.10 CLI compiler backend.
 
-No explanations.
-No markdown outside a single optional python code block.
+You must implement the specification EXACTLY.
 
-CRITICAL REQUIREMENTS:
-
-- Hidden tests are strict.
-- Exact JSON schema matters.
-- Missing required fields will fail.
-- Extra stdout text will fail.
-- Exit codes matter.
-- Ordering matters.
-- Edge cases matter.
-- Deterministic output matters.
-
-Before writing code:
-1. Re-check every required JSON field.
-2. Re-check every exit code rule.
-3. Re-check malformed input behavior.
-4. Re-check parser edge cases.
-5. Re-check hidden inferred requirements.
-
-Implementation requirements:
-- Python 3.10+
-- Standard library preferred
-- Robust parsing
-- Deterministic output
+OUTPUT RULE:
+- Return ONLY valid Python code
+- No markdown
+- No explanations
+- No comments outside code
 - No debug prints
-- No logging to stdout
-- stderr only for diagnostics
-- Defensive validation
-- Full schema compliance
 
-Specification:
+HARD CONSTRAINTS:
+- No missing imports allowed
+- Only use Python standard library
+- Do NOT invent helper functions
+- Do NOT assume undefined utilities exist
+- CLI must match specification exactly
+- stdout must contain ONLY required output
+- stderr only for errors
+- exit codes must match spec exactly
+
+BEFORE OUTPUTTING CODE, VERIFY:
+1. All imports exist
+2. All referenced names are defined
+3. CLI arguments are correct
+4. Output schema is complete
+5. No extra output exists
+6. No NameError / ImportError possible
+
+SPECIFICATION:
 {spec}
 
-Implementation plan:
+IMPLEMENTATION PLAN:
 {plan}
 """
 
 
-FAILURE_ANALYSIS_PROMPT = """You are Nightrider analyzing a failed hidden test run.
+# =========================================================
+# FAILURE ANALYSIS (STRICT DEBUG CLASSIFIER)
+# =========================================================
 
-You are repairing against hidden tests.
+FAILURE_ANALYSIS_PROMPT = """
+You are a Python compiler debugging engine.
 
-DO NOT trust the visible summary alone.
+Classify the failure into EXACTLY ONE category:
 
-Your job:
-- infer what hidden requirement is missing
-- identify exact schema mismatches
-- detect missing fields
-- detect parser edge cases
-- detect exit code mistakes
-- detect ordering issues
-- detect hidden validation requirements
-
-Classify the failure as one of:
+- missing_import
+- name_error
+- output_format
+- exit_code
 - parsing
-- output format
-- exit code
-- runtime behavior
-- missing functionality
-- validation
-- ordering
-- hidden schema mismatch
+- runtime_behavior
+- missing_functionality
 - unknown
 
-IMPORTANT:
-If the SAME failure repeats,
-assume the previous repair did NOT address root cause.
+Then provide:
 
-Repeated identical failures usually mean:
-- the wrong file was edited
-- hidden schema was ignored
-- model anchored on visible spec only
-- parser architecture is fundamentally wrong
-- required field exists in hidden tests but not visible examples
+1. root cause (1-2 lines)
+2. minimal fix (1 line)
+3. location hint (where in code likely broken)
 
-When repeated failures occur:
-- propose a deeper repair
-- reconsider assumptions
-- suggest architectural changes if needed
+RULE:
+- Do NOT suggest full rewrite unless absolutely required.
 
-Be concise but precise.
-
-Specification summary:
+SPEC SUMMARY:
 {summary}
 
-Current code:
+CURRENT CODE:
 {code}
 
-Test command:
+COMMAND:
 {command}
 
-Exit code:
+EXIT CODE:
 {exit_code}
 
-Stdout:
+STDOUT:
 {stdout}
 
-Stderr:
+STDERR:
 {stderr}
 
-Previous failure memory:
+FAILURE MEMORY:
 {failure_memory}
 
-Visible score memory:
+SCORE MEMORY:
 {score_memory}
 """
 
 
-PATCH_PROMPT = """You are Nightrider repairing a Python CLI solution.
+# =========================================================
+# PATCH GENERATION (MINIMAL CHANGE ONLY)
+# =========================================================
 
-Return ONLY the complete corrected Python source for {program_path}.
+PATCH_PROMPT = """
+You are a STRICT Python 3.10 compiler patch system.
 
-Full-file replacement is expected.
+Your task: fix ONLY the root cause of failure.
 
-CRITICAL:
-You are repairing against hidden tests.
+OUTPUT RULE:
+- Return ONLY full corrected Python file
+- No explanations
+- No markdown
+- No partial patches
 
-DO NOT make superficial patches.
+HARD RULES:
+- Do NOT rewrite working code
+- Do NOT introduce new dependencies
+- Do NOT add unnecessary imports
+- Fix only what is broken
+- Preserve CLI behavior exactly
 
-Before patching:
-- identify the actual hidden requirement
-- verify whether the current architecture supports it
-- confirm required JSON fields
-- confirm exit code behavior
-- confirm parser correctness
-- confirm deterministic ordering
+MANDATORY VALIDATION BEFORE OUTPUT:
+- No undefined names remain
+- All imports are valid standard library imports
+- No NameError / ImportError possible
+- Output matches required format exactly
+- Exit codes are correct
+- No debug output in stdout
 
-Patch rules:
-- fix root causes
-- avoid regressions
-- preserve passing behavior
-- keep stdout clean
-- stderr only for diagnostics
-- standard library preferred
-
-If the same failure repeated multiple times:
-- assume previous repair strategy failed
-- make a deeper correction
-- reconsider assumptions from visible examples
-
-Common hidden-test failures for knitting pattern compiler:
-- missing JSON fields (bind_off, cast_on, errors, expanded_rows, final_stitch_count, pattern_name, valid)
-- wrong null handling (errors empty list vs null)
-- wrong ordering (expanded_rows order)
-- malformed input handling (syntax errors)
-- duplicate pattern_name validation
-- hidden validation logic (empty rows, zero repeats)
-- wrong exit codes (parse error = 1, validation error = 0 with valid=false)
-- extra stdout text (debug prints)
-- parser ambiguity (repeat nesting)
-- incomplete schema (stitch types)
-
-Specification summary:
+SPEC SUMMARY:
 {summary}
 
-Current code:
+CURRENT CODE:
 {code}
 
-Failure analysis:
+FAILURE ANALYSIS:
 {failure_analysis}
 
-Latest test stdout:
+LATEST STDOUT:
 {stdout}
 
-Latest test stderr:
+LATEST STDERR:
 {stderr}
 """
 
 
-FINAL_REPORT_PROMPT = """You are Nightrider writing a concise final report for hackathon judges.
+# =========================================================
+# FINAL REPORT
+# =========================================================
+
+FINAL_REPORT_PROMPT = """
+You are Nightrider writing a concise final report for judges.
 
 Summarize:
-- architecture
+- system architecture
 - models used
-- tools available
-- prompting strategy
-- repair loop strategy
-- hidden test strategy
-- parser strategy
-- validation strategy
-- score progression
-- failures encountered
-- repeated failure handling
-- human interventions
-- lessons learned
-- remaining risks
+- prompt strategy
+- test strategy
+- failure patterns
+- improvements made
+- final result
 
 Mention:
-human interventions are logged in
-agent_logs/human_interventions.log
+human interventions are recorded in agent_logs/human_interventions.log
 
-Use Markdown.
-
-Run context:
+Run Context:
 {run_context}
 """
