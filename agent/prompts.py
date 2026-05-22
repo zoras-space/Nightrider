@@ -1,6 +1,6 @@
-"""Prompt templates for the Nightrider Night Drive Loop."""
+"""Prompt templates for the Knitting Pattern DSL Compiler."""
 
-SPEC_SUMMARY_PROMPT = """You are Nightrider, an autonomous coding agent solving a hidden CLI programming task.
+SPEC_SUMMARY_PROMPT = """You are Nightrider. The tool reads knitting pattern files written in a small domain-specific language, parses them, validates them, expands repeats, simulates stitch counts row by row, and prints one structured JSON document to stdout.
 
 CRITICAL:
 The visible task description may be incomplete.
@@ -245,17 +245,17 @@ If the same failure repeated multiple times:
 - make a deeper correction
 - reconsider assumptions from visible examples
 
-Common hidden-test failures:
-- missing JSON fields
-- wrong null handling
-- wrong ordering
-- malformed input handling
-- duplicate detection
-- hidden validation logic
-- wrong exit codes
-- extra stdout text
-- parser ambiguity
-- incomplete schema
+Common hidden-test failures for knitting pattern compiler:
+- missing JSON fields (bind_off, cast_on, errors, expanded_rows, final_stitch_count, pattern_name, valid)
+- wrong null handling (errors empty list vs null)
+- wrong ordering (expanded_rows order)
+- malformed input handling (syntax errors)
+- duplicate pattern_name validation
+- hidden validation logic (empty rows, zero repeats)
+- wrong exit codes (parse error = 1, validation error = 0 with valid=false)
+- extra stdout text (debug prints)
+- parser ambiguity (repeat nesting)
+- incomplete schema (stitch types)
 
 Specification summary:
 {summary}
