@@ -1,0 +1,10 @@
+.venv
+workspace
+toy_tests
+agent/*/*.pyc
+# Ignore all __pycache__ directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+agent/__pycache__/
