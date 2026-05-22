@@ -7,6 +7,7 @@ The program must read the file and print one JSON object to stdout with these in
 - `line_count`: number of lines in the file, using Python's `splitlines()` behavior.
 - `word_count`: number of whitespace-separated words.
 - `char_count`: number of characters in the file.
+- `nonempty_line_count`: number of lines that contain at least one non-whitespace character (i.e., `line.strip()` is not empty).
 
 Behavior:
 
@@ -15,4 +16,3 @@ Behavior:
 - If the file cannot be read, print a helpful error to stderr and exit nonzero.
 - Do not print debug text to stdout.
 - Use only the Python standard library.
-
