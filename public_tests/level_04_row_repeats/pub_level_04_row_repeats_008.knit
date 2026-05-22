@@ -1,4 +1,0 @@
-pattern "Repeat With Brackets"
-cast_on 4
-row 1: [k1] x4
-repeat rows 1-1 x2

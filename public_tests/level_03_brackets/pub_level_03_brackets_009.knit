@@ -1,3 +1,0 @@
-pattern "Bracket Nested Inc"
-cast_on 6
-row 1: [[inc] x2, k1] x2

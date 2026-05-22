@@ -1,4 +1,0 @@
-pattern "Increase Basic"
-cast_on 3
-row 1: k2, inc
-row 2: k4

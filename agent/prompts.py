@@ -1,300 +1,163 @@
-"""Prompt templates for the Text Counter CLI Tool."""
+"""Prompt templates for Nightrider agent (schema-first version)."""
 
-SPEC_SUMMARY_PROMPT = """You are Nightrider. The tool reads a UTF-8 text file and prints JSON statistics to stdout.
+SPEC_SUMMARY_PROMPT = """You are a strict spec extraction engine for a CLI compiler task.
 
-CRITICAL:
-The visible task description may be incomplete.
-Hidden tests may require additional fields, edge cases, validation rules,
-or exact CLI/output behavior not obvious from the short summary.
+Your job is NOT to explain the spec.
+Your job is to extract a machine-usable contract.
 
-You MUST aggressively infer:
-- hidden required JSON fields (EXACTLY line_count, word_count, char_count - NO extras)
-- strict schema requirements (no nonempty_line_count, no extra fields)
-- exact exit code behavior (0 on success, 1 on error)
-- malformed input handling (wrong arg count → error, file not found → error)
-- stdout/stderr separation (JSON only on stdout, errors on stderr)
-- edge cases (empty files, unicode, large files)
-- validation logic
-- deterministic output formatting
+You MUST output:
 
-Treat the specification as a compiler contract.
+1. REQUIRED CLI COMMAND
+2. REQUIRED OUTPUT JSON SCHEMA (STRICT)
+3. REQUIRED FIELDS (list all JSON keys)
+4. VALIDATION RULES
+5. ERROR CONDITIONS
+6. EDGE CASES
+7. FORBIDDEN OUTPUT BEHAVIOR (very important)
 
-Return a structured summary with these exact headings:
+Be precise. Do NOT hallucinate extra fields.
 
-- Required command
-- Arguments
-- Input format
-- Output format
-- Required JSON fields
-- Exit codes
-- Error behavior
-- Validation rules
-- Parsing rules
-- Ordering rules
-- Edge cases
-- Hidden test risks
-- Likely failure points
-- Likely hidden requirements
-- Constraints
-
-IMPORTANT:
-The spec defines JSON output with EXACTLY these fields:
-- line_count (int)
-- word_count (int)
-- char_count (int)
-
-DO NOT add nonempty_line_count or any other field.
-
-Specification:
+SPEC:
 {spec}
+
+STATIC ANALYSIS:
+{static_analysis}
 """
 
+IMPLEMENTATION_PLAN_PROMPT = """You are a senior compiler engineer building a CLI program.
 
-IMPLEMENTATION_PLAN_PROMPT = """You are Nightrider planning a Python CLI implementation.
+You MUST follow this rule:
 
-You are building against hidden tests.
+👉 The output JSON schema is a HARD CONTRACT. Never deviate.
 
-The visible examples are NOT sufficient.
+Before writing code, explicitly define:
 
-You MUST design for:
-- strict JSON schema matching (EXACTLY line_count, word_count, char_count)
-- hidden required fields (NONE beyond the three specified)
-- deterministic ordering
-- malformed input recovery (argument count, file errors)
-- exit code correctness (0 on success, 1 on error)
-- stderr/stdout separation (JSON on stdout only)
-- edge-case handling (empty files, unicode, whitespace)
-- robust validation
+1. FINAL JSON SCHEMA (must match spec exactly)
+2. REQUIRED OUTPUT KEYS (mandatory)
+3. OPTIONAL KEYS (if any)
+4. DEFAULT VALUES
+5. ERROR HANDLING STRATEGY
+6. PARSING STRATEGY
+7. EXECUTION FLOW
 
-Do not simplify the spec.
+Then write a deterministic implementation plan.
 
-Keep stdout completely clean.
-Only required machine-readable output belongs on stdout.
+IMPORTANT RULES:
+- stdout = ONLY JSON
+- stderr = logs/errors only
+- exit codes must match spec
+- missing field = immediate failure risk
 
-Use stderr for diagnostics.
-
-Prefer standard library only.
-
-Return a concise but rigorous implementation plan with these headings:
-
-- Parser architecture
-- Validation pipeline
-- Internal data structures
-- JSON schema strategy
-- Error handling strategy
-- Counting strategy
-- Output strategy
-- Exit code strategy
-- Hidden test defense strategy
-- Test strategy
-- Risks to watch
-
-CRITICAL JSON CONSTRAINT:
-Output must contain EXACTLY three fields: line_count, word_count, char_count.
-NEVER add nonempty_line_count or any other field.
-
-Spec summary:
+SPEC SUMMARY:
 {summary}
 """
 
+INITIAL_CODE_PROMPT = """You are generating a production-grade CLI solution.
 
-INITIAL_CODE_PROMPT = """You are Nightrider writing the initial solution file for a CLI programming challenge.
+CRITICAL RULES:
+- Output EXACTLY ONE JSON object to stdout
+- NO debug prints
+- NO extra text
+- NO logging to stdout
+- stderr allowed for errors only
+- MUST match schema exactly
 
-Return ONLY the complete Python source for {program_path}.
+Before coding, ensure:
+- every required JSON field exists
+- field names match spec EXACTLY
+- no missing keys like 'nonempty_line_count'
+- all imports are valid
 
-No explanations.
-No markdown outside a single optional python code block.
-
-CRITICAL REQUIREMENTS:
-
-- Hidden tests are strict.
-- Exact JSON schema matters. Output must have EXACTLY:
-  {{"line_count": int, "word_count": int, "char_count": int}}
-- NO extra fields like nonempty_line_count.
-- Missing required fields will fail.
-- Extra stdout text will fail.
-- Exit codes matter (0 on success, 1 on error).
-- Edge cases matter (empty files, unicode, whitespace).
-- Deterministic output matters.
-
-Before writing code:
-1. Verify EXACTLY three JSON fields.
-2. Verify exit code rules (0 success, 1 argument/file error).
-3. Verify malformed input behavior (error to stderr, exit 1).
-4. Verify empty file handling (line_count=0, word_count=0, char_count=0).
-5. Verify unicode handling.
-
-Implementation requirements:
-- Python 3.10+
-- Standard library only (no external packages)
-- Robust file reading with UTF-8 encoding
-- Deterministic output
-- No debug prints to stdout
-- stderr only for error messages
-- Defensive validation (argument count, file existence)
-- Full schema compliance (NO extra fields)
-
-Specification:
+SPEC:
 {spec}
 
-Implementation plan:
+PLAN:
 {plan}
+
+Return ONLY Python code for {program_path}.
 """
 
+FAILURE_ANALYSIS_PROMPT = """You are debugging a failing CLI compiler.
 
-FAILURE_ANALYSIS_PROMPT = """You are Nightrider analyzing a failed hidden test run.
+You must identify the EXACT root cause.
 
-You are repairing against hidden tests.
-
-DO NOT trust the visible summary alone.
-
-Your job:
-- infer what hidden requirement is missing
-- identify exact schema mismatches
-- detect missing fields
-- detect extra fields (like nonempty_line_count)
-- detect exit code mistakes
-- detect error handling issues
-
-Classify the failure as one of:
-- output format (extra fields, missing fields)
-- exit code
-- runtime behavior
-- missing functionality
-- validation
-- ordering
-- hidden schema mismatch
-- unknown
+Classify into:
+- missing_field
+- wrong_output_schema
+- parsing_error
+- runtime_crash
+- exit_code_error
+- logic_error
 
 IMPORTANT:
-If the SAME failure repeats,
-assume the previous repair did NOT address root cause.
+If output is missing a field (e.g. nonempty_line_count), ALWAYS classify as:
+→ wrong_output_schema
 
-Repeated identical failures usually mean:
-- extra field being added to JSON (like nonempty_line_count)
-- wrong file was edited
-- model anchored on visible spec only
-- output format is fundamentally wrong
-
-When repeated failures occur:
-- propose a deeper repair
-- remove ANY extra fields from JSON output
-- reconsider assumptions from visible examples
-
-Be concise but precise.
-
-Specification summary:
+SPEC SUMMARY:
 {summary}
 
-Current code:
+CODE:
 {code}
 
-Test command:
+COMMAND:
 {command}
 
-Exit code:
+EXIT CODE:
 {exit_code}
 
-Stdout:
+STDOUT:
 {stdout}
 
-Stderr:
+STDERR:
 {stderr}
 
-Previous failure memory:
+FAILURE HISTORY:
 {failure_memory}
 
-Visible score memory:
+SCORES:
 {score_memory}
 """
 
+PATCH_PROMPT = """You are fixing a failing CLI program.
 
-PATCH_PROMPT = """You are Nightrider repairing a Python CLI solution.
+RULES:
+- Fix ONLY the root cause
+- Do NOT rewrite unrelated parts
+- Ensure output JSON matches schema EXACTLY
+- Missing fields are NOT allowed under any condition
 
-Return ONLY the complete corrected Python source for {program_path}.
+COMMON FAILURE FIXES:
+- missing field → add field in JSON output
+- wrong key name → rename key exactly
+- runtime crash → fix import / variable
 
-Full-file replacement is expected.
-
-CRITICAL:
-You are repairing against hidden tests.
-
-DO NOT make superficial patches.
-
-Before patching:
-- identify the actual hidden requirement
-- verify the JSON schema has EXACTLY line_count, word_count, char_count
-- verify NO extra fields (nonempty_line_count MUST NOT appear)
-- verify exit code behavior (0 on success, 1 on error)
-- verify error messages go to stderr, not stdout
-- verify standard library only
-
-Patch rules:
-- fix root causes (remove extra fields)
-- avoid regressions
-- preserve passing behavior
-- keep stdout clean (JSON only)
-- stderr only for diagnostics
-- standard library preferred
-
-If the same failure repeated multiple times:
-- assume previous repair strategy failed
-- remove ANY extra fields from JSON output
-- reconsider assumptions from visible examples
-
-Common hidden-test failures for text counter:
-- extra JSON field 'nonempty_line_count' (FIX: remove it)
-- missing required fields
-- wrong null handling
-- malformed input handling
-- wrong exit codes
-- extra stdout text
-- encoding issues
-
-Specification summary:
+SPEC SUMMARY:
 {summary}
 
-Current code:
+CURRENT CODE:
 {code}
 
-Failure analysis:
+FAILURE ANALYSIS:
 {failure_analysis}
 
-Latest test stdout:
+LATEST STDOUT:
 {stdout}
 
-Latest test stderr:
+LATEST STDERR:
 {stderr}
+
+Return ONLY full corrected Python code for {program_path}.
 """
 
+FINAL_REPORT_PROMPT = """You are writing a concise final engineering report.
 
-FINAL_REPORT_PROMPT = """You are Nightrider writing a concise final report for hackathon judges.
-
-Summarize:
-- architecture
-- models used
-- tools available
-- prompting strategy
-- repair loop strategy
-- hidden test strategy
-- parser strategy
-- validation strategy
-- score progression
-- failures encountered
-- repeated failure handling
-- human interventions
-- lessons learned
+Include:
+- success/failure
+- failure categories
+- schema issues encountered
+- repair effectiveness
 - remaining risks
 
-Mention:
-human interventions are logged in
-agent_logs/human_interventions.log
-
-Use Markdown.
-
-Run context:
+RUN CONTEXT:
 {run_context}
 """
-
-
-# Alias for backward compatibility (fixes import error)
-SSPEC_SUMMARY_PROMPT = SPEC_SUMMARY_PROMPT

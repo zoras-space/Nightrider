@@ -1,4 +1,0 @@
-pattern "Repeat Nested Brackets"
-cast_on 4
-row 1: [k1, [p1] x1] x2
-repeat rows 1-1 x1

@@ -1,3 +1,0 @@
-pattern "Underflow Stress"
-cast_on 50
-row 1: [k1] x50, k1

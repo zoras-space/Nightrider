@@ -1,4 +1,0 @@
-pattern "X"
-cast_on 1
-row 0: k1
-repeat rows 0-1 x1
