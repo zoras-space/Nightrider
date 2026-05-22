@@ -125,15 +125,30 @@ Visible score memory:
 {score_memory}
 """
 
-PATCH_PROMPT = """You are Nightrider repairing a Python CLI solution.
+PATCH_PROMPT = """You are Nightrider repairing a failing Python CLI solution.
 
-Return only the complete corrected Python source for {program_path}. Full-file replacement is expected.
-Patch only what is necessary and fix one failure category at a time.
-Avoid rewriting the entire program unless the current structure prevents a correct small repair.
-Avoid breaking passing behavior. Keep stdout clean: no debug text, no commentary, only required output.
-Use stderr for errors. Respect exit codes. Prefer the standard library.
-Verify Python API assumptions before patching. For argparse, parser.add_argument("name") returns a string
-unless nargs is used, so a single file path should usually be used directly as args.name.
+Return ONLY the complete corrected Python source for {program_path}.
+
+FULL FILE REPLACEMENT is expected.
+
+Your task:
+- fix the failing behavior
+- preserve existing working behavior
+- avoid unnecessary rewrites
+- keep stdout clean
+- use stderr for errors
+- respect exit codes
+- prefer Python standard library
+
+IMPORTANT:
+Repeated failures may indicate that previous repairs were incomplete.
+
+You MUST:
+- compare expected vs actual behavior carefully
+- verify all required JSON fields exist
+- verify output schema carefully
+- verify edge cases carefully
+- avoid repeating previous failed fixes
 
 Specification summary:
 {summary}
@@ -149,6 +164,13 @@ Latest test stdout:
 
 Latest test stderr:
 {stderr}
+
+Before writing code:
+1. Identify exactly what is missing
+2. Identify why previous repair may have failed
+3. Then generate the corrected full file
+
+Return ONLY Python code.
 """
 
 FINAL_REPORT_PROMPT = """You are Nightrider writing a concise final report for hackathon judges.

@@ -53212,3 +53212,1965 @@ Visible score memory:
 100%
 100%
 
+[2026-05-22 08:17:06] PROMPT
+You are Nightrider, an autonomous coding agent solving a hidden CLI programming task.
+
+Treat the specification as the source of truth.
+
+Your goals:
+
+- identify required CLI behavior
+
+- identify required output fields
+
+- identify JSON schema expectations
+
+- identify edge cases
+
+- identify stdout/stderr rules
+
+- identify exit-code requirements
+
+- identify likely hidden tests
+
+STATIC ANALYSIS:
+
+STATIC REQUIREMENTS:
+- - Do not print debug text to stdout.
+- - If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- - If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- - On success, print only JSON to stdout and exit with code `0`.
+- The program must read the file and print one JSON object to stdout with these integer fields:
+
+DETECTED OUTPUT FIELDS:
+- char_count
+- error
+- line_count
+- word_count
+
+Return a structured implementation-oriented summary with these headings:
+
+- Required command
+
+- Arguments
+
+- Input format
+
+- Output format
+
+- Required output fields
+
+- Error behavior
+
+- Constraints
+
+- Edge cases
+
+- Likely test categories
+
+Be explicit about:
+
+- exact JSON keys
+
+- required fields
+
+- clean stdout behavior
+
+- stderr usage
+
+- exit codes
+
+Specification:
+
+# Toy Spec: Text Counter
+
+Write a Python CLI program that accepts exactly one positional argument: the path to a UTF-8 text file.
+
+The program must read the file and print one JSON object to stdout with these integer fields:
+
+- `line_count`: number of lines in the file, using Python's `splitlines()` behavior.
+- `word_count`: number of whitespace-separated words.
+- `char_count`: number of characters in the file.
+
+Behavior:
+
+- On success, print only JSON to stdout and exit with code `0`.
+- If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- Do not print debug text to stdout.
+- Use only the Python standard library.
+
+[2026-05-22 08:17:21] PROMPT
+You are Nightrider planning a Python 3.10+ CLI implementation.
+
+Obey the spec exactly. Keep stdout clean: only required program output belongs there.
+Use stderr for human-readable errors. Respect exit codes. Prefer the Python standard library unless dependencies are truly necessary.
+Write a simple, testable plan with these headings:
+- Implementation steps
+- Parsing strategy
+- Output strategy
+- Error strategy
+- Test strategy
+- Risks to watch
+
+Keep decisions concise for logging.
+
+Spec summary:
+STATIC REQUIREMENTS:
+- - Do not print debug text to stdout.
+- - If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- - If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- - On success, print only JSON to stdout and exit with code `0`.
+- The program must read the file and print one JSON object to stdout with these integer fields:
+
+DETECTED OUTPUT FIELDS:
+- char_count
+- error
+- line_count
+- word_count
+
+MODEL SUMMARY:
+### Implementation Summary
+
+#### Required Command
+```bash
+python3 text_counter.py <path_to_text_file>
+```
+
+#### Arguments
+- Exactly one positional argument: the path to a UTF-8 text file.
+
+#### Input Format
+- A single line of text representing the path to a UTF-8 encoded text file.
+
+#### Output Format
+- JSON object printed to stdout.
+
+#### Required Output Fields
+- `line_count`: integer representing the number of lines in the file.
+- `word_count`: integer representing the number of whitespace-separated words.
+- `char_count`: integer representing the number of characters in the file.
+
+#### Error Behavior
+- If the argument count is wrong, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Exactly one argument required (path to text file)" >&2
+  ```
+- If the file cannot be read, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Unable to read file" >&2
+  ```
+
+#### Constraints
+- The program must use only the Python standard library.
+- Do not print debug text to stdout.
+
+#### Edge Cases
+- Empty file should return `line_count=0`, `word_count=0`, `char_count=0`.
+- File with a single line and no words should return `line_count=1`, `word_count=0`, `char_count=<number_of_chars>`.
+- File with multiple lines and words should return correct counts for each field.
+- Non-existent file path should result in an error message on stderr and exit code nonzero.
+
+#### Likely Test Categories
+1. **Correct Input**
+   - Single line file
+   - Multi-line file
+   - Empty file
+
+2. **Incorrect Argument Count**
+   - No arguments provided
+   - Multiple arguments provided
+
+3. **File Read Errors**
+   - Non-existent file path
+   - File with incorrect permissions
+   - Corrupted file
+
+4. **Edge Cases**
+   - Empty lines
+   - Lines with only whitespace
+   - Lines with punctuation and special characters
+
+[2026-05-22 08:17:37] PROMPT
+You are Nightrider writing the initial solution file for a CLI programming challenge.
+
+Return only the complete Python source for workspace/solution.py. You may use a single Markdown python code fence, but do not include explanations outside the code.
+The code must obey the spec exactly, keep stdout free of debug text, use stderr for errors, respect exit codes, and prefer the standard library.
+Do not add features not requested by the spec.
+
+Specification:
+# Toy Spec: Text Counter
+
+Write a Python CLI program that accepts exactly one positional argument: the path to a UTF-8 text file.
+
+The program must read the file and print one JSON object to stdout with these integer fields:
+
+- `line_count`: number of lines in the file, using Python's `splitlines()` behavior.
+- `word_count`: number of whitespace-separated words.
+- `char_count`: number of characters in the file.
+
+Behavior:
+
+- On success, print only JSON to stdout and exit with code `0`.
+- If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- Do not print debug text to stdout.
+- Use only the Python standard library.
+
+
+
+Implementation plan:
+### Implementation Summary
+
+#### Implementation Steps
+1. Parse the command-line arguments to ensure exactly one argument is provided.
+2. Attempt to open and read the file specified by the argument.
+3. Count the number of lines, words, and characters in the file.
+4. Construct a JSON object with the counts.
+5. Print the JSON object to stdout.
+6. Handle errors gracefully:
+   - If the wrong number of arguments are provided, print an error message to stderr and exit with code 1.
+   - If the file cannot be read, print an error message to stderr and exit with code 1.
+
+#### Parsing Strategy
+- Use `sys.argv` to get command-line arguments.
+- Check if exactly one argument is provided (excluding the script name).
+
+#### Output Strategy
+- Construct a Python dictionary with keys `line_count`, `word_count`, and `char_count`.
+- Convert the dictionary to a JSON string using `json.dumps()`.
+- Print the JSON string to stdout.
+
+#### Error Strategy
+- Use `try-except` blocks to catch exceptions related to file reading.
+- If an exception occurs, print an error message to stderr and exit with code 1.
+
+#### Test Strategy
+1. **Correct Input**
+   - Create a single-line file and test the program.
+   - Create a multi-line file and test the program.
+   - Create an empty file and test the program.
+
+2. **Incorrect Argument Count**
+   - Run the program without any arguments and verify the error message.
+   - Run the program with multiple arguments and verify the error message.
+
+3. **File Read Errors**
+   - Test with a non-existent file path.
+   - Test with a file that has incorrect permissions.
+   - Test with a corrupted file.
+
+4. **Edge Cases**
+   - Create a file with empty lines and test the program.
+   - Create a file with lines containing only whitespace and test the program.
+   - Create a file with punctuation and special characters and test the program.
+
+#### Risks to Watch
+- Ensure that no debug text is printed to stdout.
+- Verify that the program handles different types of input files correctly, including edge cases like empty lines and non-standard characters.
+- Confirm that error messages are clear and helpful for users.
+
+[2026-05-22 08:17:47] PROMPT
+You are Nightrider analyzing a failed test run.
+
+Classify the likely failure category as one of: parsing, output format, exit code, runtime behavior, missing functionality, or unknown.
+Explain the smallest targeted repair needed. Be concise for logging.
+Verify assumptions against the current code and test output. For example, in argparse, a normal positional
+argument created with parser.add_argument("name") is a string, not a list; only use indexing or length checks
+when nargs explicitly returns a list.
+
+Specification summary:
+STATIC REQUIREMENTS:
+- - Do not print debug text to stdout.
+- - If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- - If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- - On success, print only JSON to stdout and exit with code `0`.
+- The program must read the file and print one JSON object to stdout with these integer fields:
+
+DETECTED OUTPUT FIELDS:
+- char_count
+- error
+- line_count
+- word_count
+
+MODEL SUMMARY:
+### Implementation Summary
+
+#### Required Command
+```bash
+python3 text_counter.py <path_to_text_file>
+```
+
+#### Arguments
+- Exactly one positional argument: the path to a UTF-8 text file.
+
+#### Input Format
+- A single line of text representing the path to a UTF-8 encoded text file.
+
+#### Output Format
+- JSON object printed to stdout.
+
+#### Required Output Fields
+- `line_count`: integer representing the number of lines in the file.
+- `word_count`: integer representing the number of whitespace-separated words.
+- `char_count`: integer representing the number of characters in the file.
+
+#### Error Behavior
+- If the argument count is wrong, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Exactly one argument required (path to text file)" >&2
+  ```
+- If the file cannot be read, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Unable to read file" >&2
+  ```
+
+#### Constraints
+- The program must use only the Python standard library.
+- Do not print debug text to stdout.
+
+#### Edge Cases
+- Empty file should return `line_count=0`, `word_count=0`, `char_count=0`.
+- File with a single line and no words should return `line_count=1`, `word_count=0`, `char_count=<number_of_chars>`.
+- File with multiple lines and words should return correct counts for each field.
+- Non-existent file path should result in an error message on stderr and exit code nonzero.
+
+#### Likely Test Categories
+1. **Correct Input**
+   - Single line file
+   - Multi-line file
+   - Empty file
+
+2. **Incorrect Argument Count**
+   - No arguments provided
+   - Multiple arguments provided
+
+3. **File Read Errors**
+   - Non-existent file path
+   - File with incorrect permissions
+   - Corrupted file
+
+4. **Edge Cases**
+   - Empty lines
+   - Lines with only whitespace
+   - Lines with punctuation and special characters
+
+Current code:
+import sys
+import json
+
+def count_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            line_count = len(content.splitlines())
+            word_count = len(content.split())
+            char_count = len(content)
+            result = {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count
+            }
+            print(json.dumps(result))
+    except FileNotFoundError:
+        sys.stderr.write(f"Error: File '{file_path}' not found.\n")
+        sys.exit(1)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: python solution.py <file_path>\n")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    count_text(file_path)
+
+
+Test command:
+pytest -q
+
+Exit code: 1
+
+Stdout:
+0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri..._json_is_error0/broken.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 9}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...must_be_array0/object.json'], returncode=0, stdout='{"line_count": 1, "word_count": 4, "char_count": 24}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...red_field_is0/missing.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 11}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+        parsed = json.loads(result.stdout)
+>       assert parsed == {
+            "line_count": 3,
+            "word_count": 3,
+            "char_count": 20,
+            "nonempty_line_count": 2,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 3} == {'char_count'...ord_count': 3}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 2}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:25: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert json.loads(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+            "nonempty_line_count": 0,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:40: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        parsed = json.loads(result.stdout)
+        assert parsed["line_count"] == 3
+        assert parsed["word_count"] == 1
+        assert parsed["char_count"] == 11
+>       assert parsed["nonempty_line_count"] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'nonempty_line_count'
+
+toy_tests/test_text_counter_repair_drill.py:59: KeyError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.56s
+
+
+Stderr:
+
+
+Previous failure memory:
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.56s
+
+Visible score memory:
+100%
+
+[2026-05-22 08:18:08] PROMPT
+You are Nightrider repairing a Python CLI solution.
+
+Return only the complete corrected Python source for workspace/solution.py. Full-file replacement is expected.
+Patch only what is necessary and fix one failure category at a time.
+Avoid rewriting the entire program unless the current structure prevents a correct small repair.
+Avoid breaking passing behavior. Keep stdout clean: no debug text, no commentary, only required output.
+Use stderr for errors. Respect exit codes. Prefer the standard library.
+Verify Python API assumptions before patching. For argparse, parser.add_argument("name") returns a string
+unless nargs is used, so a single file path should usually be used directly as args.name.
+
+Specification summary:
+STATIC REQUIREMENTS:
+- - Do not print debug text to stdout.
+- - If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- - If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- - On success, print only JSON to stdout and exit with code `0`.
+- The program must read the file and print one JSON object to stdout with these integer fields:
+
+DETECTED OUTPUT FIELDS:
+- char_count
+- error
+- line_count
+- word_count
+
+MODEL SUMMARY:
+### Implementation Summary
+
+#### Required Command
+```bash
+python3 text_counter.py <path_to_text_file>
+```
+
+#### Arguments
+- Exactly one positional argument: the path to a UTF-8 text file.
+
+#### Input Format
+- A single line of text representing the path to a UTF-8 encoded text file.
+
+#### Output Format
+- JSON object printed to stdout.
+
+#### Required Output Fields
+- `line_count`: integer representing the number of lines in the file.
+- `word_count`: integer representing the number of whitespace-separated words.
+- `char_count`: integer representing the number of characters in the file.
+
+#### Error Behavior
+- If the argument count is wrong, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Exactly one argument required (path to text file)" >&2
+  ```
+- If the file cannot be read, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Unable to read file" >&2
+  ```
+
+#### Constraints
+- The program must use only the Python standard library.
+- Do not print debug text to stdout.
+
+#### Edge Cases
+- Empty file should return `line_count=0`, `word_count=0`, `char_count=0`.
+- File with a single line and no words should return `line_count=1`, `word_count=0`, `char_count=<number_of_chars>`.
+- File with multiple lines and words should return correct counts for each field.
+- Non-existent file path should result in an error message on stderr and exit code nonzero.
+
+#### Likely Test Categories
+1. **Correct Input**
+   - Single line file
+   - Multi-line file
+   - Empty file
+
+2. **Incorrect Argument Count**
+   - No arguments provided
+   - Multiple arguments provided
+
+3. **File Read Errors**
+   - Non-existent file path
+   - File with incorrect permissions
+   - Corrupted file
+
+4. **Edge Cases**
+   - Empty lines
+   - Lines with only whitespace
+   - Lines with punctuation and special characters
+
+Current code:
+import sys
+import json
+
+def count_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            line_count = len(content.splitlines())
+            word_count = len(content.split())
+            char_count = len(content)
+            result = {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count
+            }
+            print(json.dumps(result))
+    except FileNotFoundError:
+        sys.stderr.write(f"Error: File '{file_path}' not found.\n")
+        sys.exit(1)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: python solution.py <file_path>\n")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    count_text(file_path)
+
+
+Failure analysis:
+**Failure Category:** Missing functionality  
+**Explanation:** The program does not include the `nonempty_line_count` field in its output JSON. This is required by some of the test cases.
+
+**Smallest Targeted Repair Needed:**
+Add the `nonempty_line_count` field to the output JSON.
+
+**Code Change:**
+```python
+def count_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            lines = content.splitlines()
+            line_count = len(lines)
+            word_count = sum(len(line.split()) for line in lines)
+            char_count = len(content)
+            nonempty_line_count = sum(1 for line in lines if line.strip())
+            result = {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count,
+                "nonempty_line_count": nonempty_line_count
+            }
+            print(json.dumps(result))
+    except FileNotFoundError:
+        sys.stderr.write(f"Error: File '{file_path}' not found.\n")
+        sys.exit(1)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: python solution.py <file_path>\n")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    count_text(file_path)
+```
+
+**Verification Assumptions:**
+- The program now includes the `nonempty_line_count` field in its output JSON.
+- This should resolve the test failures related to the missing `nonempty_line_count` field.
+
+Latest test stdout:
+0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri..._json_is_error0/broken.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 9}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...must_be_array0/object.json'], returncode=0, stdout='{"line_count": 1, "word_count": 4, "char_count": 24}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...red_field_is0/missing.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 11}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+        parsed = json.loads(result.stdout)
+>       assert parsed == {
+            "line_count": 3,
+            "word_count": 3,
+            "char_count": 20,
+            "nonempty_line_count": 2,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 3} == {'char_count'...ord_count': 3}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 2}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:25: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert json.loads(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+            "nonempty_line_count": 0,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:40: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-72/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        parsed = json.loads(result.stdout)
+        assert parsed["line_count"] == 3
+        assert parsed["word_count"] == 1
+        assert parsed["char_count"] == 11
+>       assert parsed["nonempty_line_count"] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'nonempty_line_count'
+
+toy_tests/test_text_counter_repair_drill.py:59: KeyError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.56s
+
+
+Latest test stderr:
+
+[2026-05-22 08:18:27] PROMPT
+You are Nightrider analyzing a failed test run.
+
+Classify the likely failure category as one of: parsing, output format, exit code, runtime behavior, missing functionality, or unknown.
+Explain the smallest targeted repair needed. Be concise for logging.
+Verify assumptions against the current code and test output. For example, in argparse, a normal positional
+argument created with parser.add_argument("name") is a string, not a list; only use indexing or length checks
+when nargs explicitly returns a list.
+
+Specification summary:
+STATIC REQUIREMENTS:
+- - Do not print debug text to stdout.
+- - If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- - If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- - On success, print only JSON to stdout and exit with code `0`.
+- The program must read the file and print one JSON object to stdout with these integer fields:
+
+DETECTED OUTPUT FIELDS:
+- char_count
+- error
+- line_count
+- word_count
+
+MODEL SUMMARY:
+### Implementation Summary
+
+#### Required Command
+```bash
+python3 text_counter.py <path_to_text_file>
+```
+
+#### Arguments
+- Exactly one positional argument: the path to a UTF-8 text file.
+
+#### Input Format
+- A single line of text representing the path to a UTF-8 encoded text file.
+
+#### Output Format
+- JSON object printed to stdout.
+
+#### Required Output Fields
+- `line_count`: integer representing the number of lines in the file.
+- `word_count`: integer representing the number of whitespace-separated words.
+- `char_count`: integer representing the number of characters in the file.
+
+#### Error Behavior
+- If the argument count is wrong, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Exactly one argument required (path to text file)" >&2
+  ```
+- If the file cannot be read, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Unable to read file" >&2
+  ```
+
+#### Constraints
+- The program must use only the Python standard library.
+- Do not print debug text to stdout.
+
+#### Edge Cases
+- Empty file should return `line_count=0`, `word_count=0`, `char_count=0`.
+- File with a single line and no words should return `line_count=1`, `word_count=0`, `char_count=<number_of_chars>`.
+- File with multiple lines and words should return correct counts for each field.
+- Non-existent file path should result in an error message on stderr and exit code nonzero.
+
+#### Likely Test Categories
+1. **Correct Input**
+   - Single line file
+   - Multi-line file
+   - Empty file
+
+2. **Incorrect Argument Count**
+   - No arguments provided
+   - Multiple arguments provided
+
+3. **File Read Errors**
+   - Non-existent file path
+   - File with incorrect permissions
+   - Corrupted file
+
+4. **Edge Cases**
+   - Empty lines
+   - Lines with only whitespace
+   - Lines with punctuation and special characters
+
+Current code:
+import sys
+import json
+
+def count_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            lines = content.splitlines()
+            line_count = len(lines)
+            word_count = sum(len(line.split()) for line in lines)
+            char_count = len(content)
+            nonempty_line_count = sum(1 for line in lines if line.strip())
+            result = {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count,
+                "nonempty_line_count": nonempty_line_count
+            }
+            print(json.dumps(result))
+    except FileNotFoundError:
+        sys.stderr.write(f"Error: File '{file_path}' not found.\n")
+        sys.exit(1)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: python solution.py <file_path>\n")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    count_text(file_path)
+
+
+Test command:
+pytest -q
+
+Exit code: 1
+
+Stdout:
+identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter.py:45: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-73/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 3,
+            "word_count": 4,
+            "char_count": len(content),
+        }
+
+toy_tests/test_text_counter_extra.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 3, "word_count": 4, "char_count": 22, "nonempty_line_count": 2}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-73/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 2,
+            "word_count": 1,
+            "char_count": 5,
+        }
+
+toy_tests/test_text_counter_extra.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 2, "word_count": 1, "char_count": 5, "nonempty_line_count": 1}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-73/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stdout.count("{") == 1
+        assert result.stdout.count("}") == 1
+>       parse_json_stdout(result.stdout)
+
+toy_tests/test_text_counter_extra.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 1, "word_count": 3, "char_count": 6, "nonempty_line_count": 1}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+13 failed, 8 passed in 0.56s
+
+
+Stderr:
+
+
+Previous failure memory:
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.56s
+---
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+13 failed, 8 passed in 0.56s
+
+Visible score memory:
+100%
+100%
+
+[2026-05-22 08:18:43] PROMPT
+You are Nightrider repairing a Python CLI solution.
+
+Return only the complete corrected Python source for workspace/solution.py. Full-file replacement is expected.
+Patch only what is necessary and fix one failure category at a time.
+Avoid rewriting the entire program unless the current structure prevents a correct small repair.
+Avoid breaking passing behavior. Keep stdout clean: no debug text, no commentary, only required output.
+Use stderr for errors. Respect exit codes. Prefer the standard library.
+Verify Python API assumptions before patching. For argparse, parser.add_argument("name") returns a string
+unless nargs is used, so a single file path should usually be used directly as args.name.
+
+Specification summary:
+STATIC REQUIREMENTS:
+- - Do not print debug text to stdout.
+- - If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- - If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- - On success, print only JSON to stdout and exit with code `0`.
+- The program must read the file and print one JSON object to stdout with these integer fields:
+
+DETECTED OUTPUT FIELDS:
+- char_count
+- error
+- line_count
+- word_count
+
+MODEL SUMMARY:
+### Implementation Summary
+
+#### Required Command
+```bash
+python3 text_counter.py <path_to_text_file>
+```
+
+#### Arguments
+- Exactly one positional argument: the path to a UTF-8 text file.
+
+#### Input Format
+- A single line of text representing the path to a UTF-8 encoded text file.
+
+#### Output Format
+- JSON object printed to stdout.
+
+#### Required Output Fields
+- `line_count`: integer representing the number of lines in the file.
+- `word_count`: integer representing the number of whitespace-separated words.
+- `char_count`: integer representing the number of characters in the file.
+
+#### Error Behavior
+- If the argument count is wrong, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Exactly one argument required (path to text file)" >&2
+  ```
+- If the file cannot be read, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Unable to read file" >&2
+  ```
+
+#### Constraints
+- The program must use only the Python standard library.
+- Do not print debug text to stdout.
+
+#### Edge Cases
+- Empty file should return `line_count=0`, `word_count=0`, `char_count=0`.
+- File with a single line and no words should return `line_count=1`, `word_count=0`, `char_count=<number_of_chars>`.
+- File with multiple lines and words should return correct counts for each field.
+- Non-existent file path should result in an error message on stderr and exit code nonzero.
+
+#### Likely Test Categories
+1. **Correct Input**
+   - Single line file
+   - Multi-line file
+   - Empty file
+
+2. **Incorrect Argument Count**
+   - No arguments provided
+   - Multiple arguments provided
+
+3. **File Read Errors**
+   - Non-existent file path
+   - File with incorrect permissions
+   - Corrupted file
+
+4. **Edge Cases**
+   - Empty lines
+   - Lines with only whitespace
+   - Lines with punctuation and special characters
+
+Current code:
+import sys
+import json
+
+def count_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            lines = content.splitlines()
+            line_count = len(lines)
+            word_count = sum(len(line.split()) for line in lines)
+            char_count = len(content)
+            nonempty_line_count = sum(1 for line in lines if line.strip())
+            result = {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count,
+                "nonempty_line_count": nonempty_line_count
+            }
+            print(json.dumps(result))
+    except FileNotFoundError:
+        sys.stderr.write(f"Error: File '{file_path}' not found.\n")
+        sys.exit(1)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: python solution.py <file_path>\n")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    count_text(file_path)
+
+
+Failure analysis:
+**Failure Category:** Output format
+
+**Smallest Targeted Repair Needed:**
+Remove the `nonempty_line_count` field from the output JSON.
+
+**Explanation:**
+The test cases expect the output JSON to contain only `line_count`, `word_count`, and `char_count`. The current implementation includes an additional `nonempty_line_count` field, which is not required by the specification. Removing this field will resolve the mismatch between expected and actual output.
+
+**Verification Assumptions:**
+- The program must adhere to the specified output format.
+- The `nonempty_line_count` field is not part of the required output fields as per the STATIC REQUIREMENTS section.
+
+By making this change, the program should pass all the test cases that are failing due to the unexpected `nonempty_line_count` field.
+
+Latest test stdout:
+identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter.py:45: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-73/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 3,
+            "word_count": 4,
+            "char_count": len(content),
+        }
+
+toy_tests/test_text_counter_extra.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 3, "word_count": 4, "char_count": 22, "nonempty_line_count": 2}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-73/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+>       assert parse_json_stdout(result.stdout) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "line_count": 2,
+            "word_count": 1,
+            "char_count": 5,
+        }
+
+toy_tests/test_text_counter_extra.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 2, "word_count": 1, "char_count": 5, "nonempty_line_count": 1}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-73/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stdout.count("{") == 1
+        assert result.stdout.count("}") == 1
+>       parse_json_stdout(result.stdout)
+
+toy_tests/test_text_counter_extra.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+stdout = '{"line_count": 1, "word_count": 3, "char_count": 6, "nonempty_line_count": 1}\n'
+
+    def parse_json_stdout(stdout: str) -> dict[str, int]:
+        assert stdout.strip(), "program should print JSON to stdout on success"
+        assert "debug" not in stdout.lower()
+        assert "trace" not in stdout.lower()
+        parsed = json.loads(stdout)
+>       assert set(parsed) == {"line_count", "word_count", "char_count"}
+E       AssertionError: assert {'char_count'... 'word_count'} == {'char_count'... 'word_count'}
+E         
+E         Extra items in the left set:
+E         'nonempty_line_count'
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_extra.py:21: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+13 failed, 8 passed in 0.56s
+
+
+Latest test stderr:
+
+[2026-05-22 08:19:02] PROMPT
+You are Nightrider analyzing a failed test run.
+
+Classify the likely failure category as one of: parsing, output format, exit code, runtime behavior, missing functionality, or unknown.
+Explain the smallest targeted repair needed. Be concise for logging.
+Verify assumptions against the current code and test output. For example, in argparse, a normal positional
+argument created with parser.add_argument("name") is a string, not a list; only use indexing or length checks
+when nargs explicitly returns a list.
+
+Specification summary:
+STATIC REQUIREMENTS:
+- - Do not print debug text to stdout.
+- - If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- - If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- - On success, print only JSON to stdout and exit with code `0`.
+- The program must read the file and print one JSON object to stdout with these integer fields:
+
+DETECTED OUTPUT FIELDS:
+- char_count
+- error
+- line_count
+- word_count
+
+MODEL SUMMARY:
+### Implementation Summary
+
+#### Required Command
+```bash
+python3 text_counter.py <path_to_text_file>
+```
+
+#### Arguments
+- Exactly one positional argument: the path to a UTF-8 text file.
+
+#### Input Format
+- A single line of text representing the path to a UTF-8 encoded text file.
+
+#### Output Format
+- JSON object printed to stdout.
+
+#### Required Output Fields
+- `line_count`: integer representing the number of lines in the file.
+- `word_count`: integer representing the number of whitespace-separated words.
+- `char_count`: integer representing the number of characters in the file.
+
+#### Error Behavior
+- If the argument count is wrong, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Exactly one argument required (path to text file)" >&2
+  ```
+- If the file cannot be read, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Unable to read file" >&2
+  ```
+
+#### Constraints
+- The program must use only the Python standard library.
+- Do not print debug text to stdout.
+
+#### Edge Cases
+- Empty file should return `line_count=0`, `word_count=0`, `char_count=0`.
+- File with a single line and no words should return `line_count=1`, `word_count=0`, `char_count=<number_of_chars>`.
+- File with multiple lines and words should return correct counts for each field.
+- Non-existent file path should result in an error message on stderr and exit code nonzero.
+
+#### Likely Test Categories
+1. **Correct Input**
+   - Single line file
+   - Multi-line file
+   - Empty file
+
+2. **Incorrect Argument Count**
+   - No arguments provided
+   - Multiple arguments provided
+
+3. **File Read Errors**
+   - Non-existent file path
+   - File with incorrect permissions
+   - Corrupted file
+
+4. **Edge Cases**
+   - Empty lines
+   - Lines with only whitespace
+   - Lines with punctuation and special characters
+
+Current code:
+import sys
+import json
+
+def count_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            lines = content.splitlines()
+            line_count = len(lines)
+            word_count = sum(len(line.split()) for line in lines)
+            char_count = len(content)
+            result = {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count
+            }
+            print(json.dumps(result))
+    except FileNotFoundError:
+        sys.stderr.write(f"Error: File '{file_path}' not found.\n")
+        sys.exit(1)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: python solution.py <file_path>\n")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    count_text(file_path)
+
+
+Test command:
+pytest -q
+
+Exit code: 1
+
+Stdout:
+0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri..._json_is_error0/broken.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 9}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...must_be_array0/object.json'], returncode=0, stdout='{"line_count": 1, "word_count": 4, "char_count": 24}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...red_field_is0/missing.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 11}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+        parsed = json.loads(result.stdout)
+>       assert parsed == {
+            "line_count": 3,
+            "word_count": 3,
+            "char_count": 20,
+            "nonempty_line_count": 2,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 3} == {'char_count'...ord_count': 3}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 2}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:25: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert json.loads(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+            "nonempty_line_count": 0,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:40: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        parsed = json.loads(result.stdout)
+        assert parsed["line_count"] == 3
+        assert parsed["word_count"] == 1
+        assert parsed["char_count"] == 11
+>       assert parsed["nonempty_line_count"] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'nonempty_line_count'
+
+toy_tests/test_text_counter_repair_drill.py:59: KeyError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.60s
+
+
+Stderr:
+
+
+Previous failure memory:
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.56s
+---
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+13 failed, 8 passed in 0.56s
+---
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.60s
+
+Visible score memory:
+100%
+100%
+100%
+
+[2026-05-22 08:19:26] PROMPT
+You are Nightrider repairing a Python CLI solution.
+
+Return only the complete corrected Python source for workspace/solution.py. Full-file replacement is expected.
+Patch only what is necessary and fix one failure category at a time.
+Avoid rewriting the entire program unless the current structure prevents a correct small repair.
+Avoid breaking passing behavior. Keep stdout clean: no debug text, no commentary, only required output.
+Use stderr for errors. Respect exit codes. Prefer the standard library.
+Verify Python API assumptions before patching. For argparse, parser.add_argument("name") returns a string
+unless nargs is used, so a single file path should usually be used directly as args.name.
+
+Specification summary:
+STATIC REQUIREMENTS:
+- - Do not print debug text to stdout.
+- - If the argument count is wrong, print a helpful error to stderr and exit nonzero.
+- - If the file cannot be read, print a helpful error to stderr and exit nonzero.
+- - On success, print only JSON to stdout and exit with code `0`.
+- The program must read the file and print one JSON object to stdout with these integer fields:
+
+DETECTED OUTPUT FIELDS:
+- char_count
+- error
+- line_count
+- word_count
+
+MODEL SUMMARY:
+### Implementation Summary
+
+#### Required Command
+```bash
+python3 text_counter.py <path_to_text_file>
+```
+
+#### Arguments
+- Exactly one positional argument: the path to a UTF-8 text file.
+
+#### Input Format
+- A single line of text representing the path to a UTF-8 encoded text file.
+
+#### Output Format
+- JSON object printed to stdout.
+
+#### Required Output Fields
+- `line_count`: integer representing the number of lines in the file.
+- `word_count`: integer representing the number of whitespace-separated words.
+- `char_count`: integer representing the number of characters in the file.
+
+#### Error Behavior
+- If the argument count is wrong, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Exactly one argument required (path to text file)" >&2
+  ```
+- If the file cannot be read, print a helpful error message to stderr and exit with code nonzero.
+  ```bash
+  echo "Error: Unable to read file" >&2
+  ```
+
+#### Constraints
+- The program must use only the Python standard library.
+- Do not print debug text to stdout.
+
+#### Edge Cases
+- Empty file should return `line_count=0`, `word_count=0`, `char_count=0`.
+- File with a single line and no words should return `line_count=1`, `word_count=0`, `char_count=<number_of_chars>`.
+- File with multiple lines and words should return correct counts for each field.
+- Non-existent file path should result in an error message on stderr and exit code nonzero.
+
+#### Likely Test Categories
+1. **Correct Input**
+   - Single line file
+   - Multi-line file
+   - Empty file
+
+2. **Incorrect Argument Count**
+   - No arguments provided
+   - Multiple arguments provided
+
+3. **File Read Errors**
+   - Non-existent file path
+   - File with incorrect permissions
+   - Corrupted file
+
+4. **Edge Cases**
+   - Empty lines
+   - Lines with only whitespace
+   - Lines with punctuation and special characters
+
+Current code:
+import sys
+import json
+
+def count_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            lines = content.splitlines()
+            line_count = len(lines)
+            word_count = sum(len(line.split()) for line in lines)
+            char_count = len(content)
+            result = {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count
+            }
+            print(json.dumps(result))
+    except FileNotFoundError:
+        sys.stderr.write(f"Error: File '{file_path}' not found.\n")
+        sys.exit(1)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: python solution.py <file_path>\n")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    count_text(file_path)
+
+
+Failure analysis:
+**Failure Category:** Missing Functionality  
+**Explanation:** The program does not include a field for `nonempty_line_count`. This is required by some of the tests.
+
+**Smallest Targeted Repair Needed:**
+Add the `nonempty_line_count` field to the JSON output.
+
+**Code Change:**
+```python
+def count_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            lines = content.splitlines()
+            line_count = len(lines)
+            word_count = sum(len(line.split()) for line in lines)
+            char_count = len(content)
+            nonempty_line_count = sum(1 for line in lines if line.strip())
+            result = {
+                "line_count": line_count,
+                "word_count": word_count,
+                "char_count": char_count,
+                "nonempty_line_count": nonempty_line_count
+            }
+            print(json.dumps(result))
+    except FileNotFoundError:
+        sys.stderr.write(f"Error: File '{file_path}' not found.\n")
+        sys.exit(1)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: python solution.py <file_path>\n")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    count_text(file_path)
+```
+
+**Verification Assumptions:**
+- The `nonempty_line_count` field is correctly calculated as the number of lines that are not empty after stripping whitespace.
+- This change should pass the tests related to `nonempty_line_count`.
+
+Latest test stdout:
+0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri..._json_is_error0/broken.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 9}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:51: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...must_be_array0/object.json'], returncode=0, stdout='{"line_count": 1, "word_count": 4, "char_count": 24}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:62: AssertionError
+_____________________ test_missing_required_field_is_error _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_missing_required_field_is0')
+
+    def test_missing_required_field_is_error(tmp_path: Path) -> None:
+        source = tmp_path / "missing.json"
+        source.write_text(json.dumps([{"id": 1}]), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...red_field_is0/missing.json'], returncode=0, stdout='{"line_count": 1, "word_count": 2, "char_count": 11}\n', stderr='').returncode
+
+toy_tests/test_json_transformer.py:73: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        assert result.stderr == ""
+        parsed = json.loads(result.stdout)
+>       assert parsed == {
+            "line_count": 3,
+            "word_count": 3,
+            "char_count": 20,
+            "nonempty_line_count": 2,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 3} == {'char_count'...ord_count': 3}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 2}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:25: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+>       assert json.loads(result.stdout) == {
+            "line_count": 0,
+            "word_count": 0,
+            "char_count": 0,
+            "nonempty_line_count": 0,
+        }
+E       AssertionError: assert {'char_count'...ord_count': 0} == {'char_count'...ord_count': 0}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Right contains 1 more item:
+E         {'nonempty_line_count': 0}
+E         Use -v to get more diff
+
+toy_tests/test_text_counter_repair_drill.py:40: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-74/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+        assert result.returncode == 0
+        parsed = json.loads(result.stdout)
+        assert parsed["line_count"] == 3
+        assert parsed["word_count"] == 1
+        assert parsed["char_count"] == 11
+>       assert parsed["nonempty_line_count"] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'nonempty_line_count'
+
+toy_tests/test_text_counter_repair_drill.py:59: KeyError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_inventory_cli.py::test_remove_too_many_is_error - asser...
+FAILED toy_tests/test_inventory_cli.py::test_malformed_command_is_error - ass...
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_invalid_json_is_error - asser...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert 0...
+FAILED toy_tests/test_json_transformer.py::test_missing_required_field_is_error
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+11 failed, 10 passed in 0.60s
+
+
+Latest test stderr:
+
