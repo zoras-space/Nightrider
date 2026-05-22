@@ -2,21 +2,64 @@
 
 SPEC_SUMMARY_PROMPT = """You are Nightrider, an autonomous coding agent solving a hidden CLI programming task.
 
-Treat the specification as the source of truth. Extract only actionable requirements.
-Return a structured summary with these headings:
+Treat the specification as the source of truth.
+
+Your goals:
+
+- identify required CLI behavior
+
+- identify required output fields
+
+- identify JSON schema expectations
+
+- identify edge cases
+
+- identify stdout/stderr rules
+
+- identify exit-code requirements
+
+- identify likely hidden tests
+
+STATIC ANALYSIS:
+
+{static_analysis}
+
+Return a structured implementation-oriented summary with these headings:
+
 - Required command
+
 - Arguments
+
 - Input format
+
 - Output format
+
+- Required output fields
+
 - Error behavior
+
 - Constraints
+
 - Edge cases
+
 - Likely test categories
 
-Keep stdout cleanliness, stderr behavior, and exit codes explicit.
+Be explicit about:
+
+- exact JSON keys
+
+- required fields
+
+- clean stdout behavior
+
+- stderr usage
+
+- exit codes
 
 Specification:
+
 {spec}
+
 """
 
 IMPLEMENTATION_PLAN_PROMPT = """You are Nightrider planning a Python 3.10+ CLI implementation.
