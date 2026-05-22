@@ -34583,3 +34583,744 @@ FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_a
 stderr:
 <empty>
 
+[2026-05-22 10:56:03] COMMAND
+command: pytest -q
+exit_code: 1
+duration_seconds: 0.703
+stdout:
+FF..F.F.FFF.FF..FFFF.                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_inventory_cli.py:40: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_inventory_cli.py:54: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_json_transformer.py:37: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "array" in result.stderr.lower()
+E       assert 'array' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n'
+E        +  where 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n' = <built-in method lower of str object at 0x110a9ad30>()
+E        +    where <built-in method lower of str object at 0x110a9ad30> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').stderr
+
+toy_tests/test_json_transformer.py:64: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter.py:29: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter.py:44: AssertionError
+________________________ test_missing_argument_is_error ________________________
+
+    def test_missing_argument_is_error() -> None:
+        result = run_program()
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "usage" in result.stderr.lower() or "argument" in result.stderr.lower()
+E       assert ('usage' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n' or 'argument' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n')
+E        +  where 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n' = <built-in method lower of str object at 0x110b44630>()
+E        +    where <built-in method lower of str object at 0x110b44630> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py'], retu...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').stderr
+E        +  and   'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n' = <built-in method lower of str object at 0x110b44630>()
+E        +    where <built-in method lower of str object at 0x110b44630> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py'], retu...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').stderr
+
+toy_tests/test_text_counter.py:57: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:33: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:49: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:83: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:22: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:39: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-108/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 1, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:54: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - assert 1 == 0
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - ass...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert '...
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - assert 1 == 0
+FAILED toy_tests/test_text_counter.py::test_empty_file - assert 1 == 0
+FAILED toy_tests/test_text_counter.py::test_missing_argument_is_error - asser...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+13 failed, 8 passed in 0.51s
+stderr:
+<empty>
+
+[2026-05-22 10:56:04] COMMAND
+command: pytest -q
+exit_code: 1
+duration_seconds: 0.689
+stdout:
+FF..F.F.FFF.FF..FFFF.                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_inventory_cli.py:40: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_inventory_cli.py:54: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_json_transformer.py:37: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "array" in result.stderr.lower()
+E       assert 'array' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n'
+E        +  where 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n' = <built-in method lower of str object at 0x10405ad30>()
+E        +    where <built-in method lower of str object at 0x10405ad30> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').stderr
+
+toy_tests/test_json_transformer.py:64: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter.py:29: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter.py:44: AssertionError
+________________________ test_missing_argument_is_error ________________________
+
+    def test_missing_argument_is_error() -> None:
+        result = run_program()
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "usage" in result.stderr.lower() or "argument" in result.stderr.lower()
+E       assert ('usage' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n' or 'argument' in 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n')
+E        +  where 'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n' = <built-in method lower of str object at 0x104104630>()
+E        +    where <built-in method lower of str object at 0x104104630> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py'], retu...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').stderr
+E        +  and   'traceback (most recent call last):\n  file "/users/khaledrahnama/desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nnameerror: name \'json\' is not defined. did you forget to import \'json\'?\n' = <built-in method lower of str object at 0x104104630>()
+E        +    where <built-in method lower of str object at 0x104104630> = 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/khaledrahnama/Desktop/nightrider3/workspace/solution.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py'], retu...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').stderr
+
+toy_tests/test_text_counter.py:57: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:33: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:49: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_extra.py:83: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:22: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:39: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-109/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ion.py", line 2, in <module>\n    json\nNameError: name \'json\' is not defined. Did you forget to import \'json\'?\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:54: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - assert 1 == 0
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - ass...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - assert '...
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - assert 1 == 0
+FAILED toy_tests/test_text_counter.py::test_empty_file - assert 1 == 0
+FAILED toy_tests/test_text_counter.py::test_missing_argument_is_error - asser...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+13 failed, 8 passed in 0.54s
+stderr:
+<empty>
+
+[2026-05-22 10:56:50] COMMAND
+command: pytest -q
+exit_code: 1
+duration_seconds: 0.849
+stdout:
+FF..F.F.FFF.FF..FFFF.                                                    [100%]
+=================================== FAILURES ===================================
+___________________________ test_inventory_commands ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_inventory_commands0')
+
+    def test_inventory_commands(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text(
+            "\n".join(
+                [
+                    "ADD apple 5",
+                    "ADD banana 2",
+                    "TOTAL",
+                    "REMOVE apple 3",
+                    "TOTAL",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...st_inventory_commands0/commands.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_inventory_cli.py:40: AssertionError
+_____________________ test_zero_quantity_items_are_omitted _____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_zero_quantity_items_are_o0')
+
+    def test_zero_quantity_items_are_omitted(tmp_path: Path) -> None:
+        commands = tmp_path / "commands.txt"
+        commands.write_text("ADD lamp 1\nREMOVE lamp 1\nTOTAL\n", encoding="utf-8")
+    
+        result = run_program(str(commands))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri..._quantity_items_are_o0/commands.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_inventory_cli.py:54: AssertionError
+_________________________ test_normalizes_json_objects _________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_normalizes_json_objects0')
+
+    def test_normalizes_json_objects(tmp_path: Path) -> None:
+        source = tmp_path / "items.json"
+        source.write_text(
+            json.dumps(
+                [
+                    {"id": 2, "name": "  Ada  ", "active": True, "ignored": "x"},
+                    {"id": 3, "name": "Linus"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_program(str(source))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...normalizes_json_objects0/items.json'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_json_transformer.py:37: AssertionError
+___________________________ test_root_must_be_array ____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_root_must_be_array0')
+
+    def test_root_must_be_array(tmp_path: Path) -> None:
+        source = tmp_path / "object.json"
+        source.write_text(json.dumps({"id": 1, "name": "Ada"}), encoding="utf-8")
+    
+        result = run_program(str(source))
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "array" in result.stderr.lower()
+E       AssertionError: assert 'array' in 'error: input file must be a non-empty file.\n'
+E        +  where 'error: input file must be a non-empty file.\n' = <built-in method lower of str object at 0x1016dfa50>()
+E        +    where <built-in method lower of str object at 0x1016dfa50> = 'Error: Input file must be a non-empty file.\n'.lower
+E        +      where 'Error: Input file must be a non-empty file.\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...est_root_must_be_array0/object.json'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').stderr
+
+toy_tests/test_json_transformer.py:64: AssertionError
+____________________________ test_counts_text_file _____________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_counts_text_file0')
+
+    def test_counts_text_file(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("one two\nthree\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...0/test_counts_text_file0/sample.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_text_counter.py:29: AssertionError
+_______________________________ test_empty_file ________________________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_empty_file0')
+
+    def test_empty_file(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...test-110/test_empty_file0/empty.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_text_counter.py:44: AssertionError
+________________________ test_missing_argument_is_error ________________________
+
+    def test_missing_argument_is_error() -> None:
+        result = run_program()
+    
+        assert result.returncode != 0
+        assert result.stdout == ""
+>       assert "usage" in result.stderr.lower() or "argument" in result.stderr.lower()
+E       AssertionError: assert ('usage' in 'error: input file must be a non-empty file.\n' or 'argument' in 'error: input file must be a non-empty file.\n')
+E        +  where 'error: input file must be a non-empty file.\n' = <built-in method lower of str object at 0x101673c30>()
+E        +    where <built-in method lower of str object at 0x101673c30> = 'Error: Input file must be a non-empty file.\n'.lower
+E        +      where 'Error: Input file must be a non-empty file.\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').stderr
+E        +  and   'error: input file must be a non-empty file.\n' = <built-in method lower of str object at 0x101673c30>()
+E        +    where <built-in method lower of str object at 0x101673c30> = 'Error: Input file must be a non-empty file.\n'.lower
+E        +      where 'Error: Input file must be a non-empty file.\n' = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').stderr
+
+toy_tests/test_text_counter.py:57: AssertionError
+__________ test_counts_unicode_tabs_blank_lines_and_final_no_newline ___________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_counts_unicode_tabs_blank0')
+
+    def test_counts_unicode_tabs_blank_lines_and_final_no_newline(tmp_path: Path) -> None:
+        sample = tmp_path / "mixed.txt"
+        content = "alpha\tbeta\n\ncafe Ωmega"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ounts_unicode_tabs_blank0/mixed.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_text_counter_extra.py:33: AssertionError
+___________________ test_counts_trailing_newline_characters ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_counts_trailing_newline_c0')
+
+    def test_counts_trailing_newline_characters(tmp_path: Path) -> None:
+        sample = tmp_path / "trailing.txt"
+        content = "one\n\n"
+        sample.write_text(content, encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...ts_trailing_newline_c0/trailing.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_text_counter_extra.py:49: AssertionError
+_______________________ test_output_is_single_json_value _______________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_output_is_single_json_val0')
+
+    def test_output_is_single_json_value(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("a b c\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...tput_is_single_json_val0/sample.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_text_counter_extra.py:83: AssertionError
+___________________ test_requires_nonempty_line_count_field ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_requires_nonempty_line_co0')
+
+    def test_requires_nonempty_line_count_field(tmp_path: Path) -> None:
+        sample = tmp_path / "sample.txt"
+        sample.write_text("alpha beta\n\n gamma \n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...quires_nonempty_line_co0/sample.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:22: AssertionError
+___________________ test_empty_file_has_zero_nonempty_lines ____________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_empty_file_has_zero_nonem0')
+
+    def test_empty_file_has_zero_nonempty_lines(tmp_path: Path) -> None:
+        sample = tmp_path / "empty.txt"
+        sample.write_text("", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...mpty_file_has_zero_nonem0/empty.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:39: AssertionError
+_________________ test_whitespace_only_lines_are_not_nonempty __________________
+
+tmp_path = PosixPath('/private/var/folders/gk/ld6sqyrd3z7d3tqhzmxqhjbc0000gn/T/pytest-of-khaledrahnama/pytest-110/test_whitespace_only_lines_are0')
+
+    def test_whitespace_only_lines_are_not_nonempty(tmp_path: Path) -> None:
+        sample = tmp_path / "spaces.txt"
+        sample.write_text("   \n\t\nword\n", encoding="utf-8")
+    
+        result = run_program(str(sample))
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/khaledrahnama/Desktop/nightrider3/.venv/bin/python3.12', 'workspace/solution.py', '/pri...itespace_only_lines_are0/spaces.txt'], returncode=1, stdout='', stderr='Error: Input file must be a non-empty file.\n').returncode
+
+toy_tests/test_text_counter_repair_drill.py:54: AssertionError
+=========================== short test summary info ============================
+FAILED toy_tests/test_inventory_cli.py::test_inventory_commands - AssertionEr...
+FAILED toy_tests/test_inventory_cli.py::test_zero_quantity_items_are_omitted
+FAILED toy_tests/test_json_transformer.py::test_normalizes_json_objects - Ass...
+FAILED toy_tests/test_json_transformer.py::test_root_must_be_array - Assertio...
+FAILED toy_tests/test_text_counter.py::test_counts_text_file - AssertionError...
+FAILED toy_tests/test_text_counter.py::test_empty_file - AssertionError: asse...
+FAILED toy_tests/test_text_counter.py::test_missing_argument_is_error - Asser...
+FAILED toy_tests/test_text_counter_extra.py::test_counts_unicode_tabs_blank_lines_and_final_no_newline
+FAILED toy_tests/test_text_counter_extra.py::test_counts_trailing_newline_characters
+FAILED toy_tests/test_text_counter_extra.py::test_output_is_single_json_value
+FAILED toy_tests/test_text_counter_repair_drill.py::test_requires_nonempty_line_count_field
+FAILED toy_tests/test_text_counter_repair_drill.py::test_empty_file_has_zero_nonempty_lines
+FAILED toy_tests/test_text_counter_repair_drill.py::test_whitespace_only_lines_are_not_nonempty
+13 failed, 8 passed in 0.64s
+stderr:
+<empty>
+
