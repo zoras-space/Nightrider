@@ -1,6 +1,11 @@
 """Prompt templates for the Knitting Pattern DSL Compiler."""
 
-SPEC_SUMMARY_PROMPT = """You are Nightrider. The tool reads knitting pattern files written in a small domain-specific language, parses them, validates them, expands repeats, simulates stitch counts row by row, and prints one structured JSON document to stdout.
+SSPEC_SUMMARY_PROMPT = """You are Nightrider. The tool reads a file and prints JSON statistics to stdout.
+
+The problem changes depending on the file extension or content pattern:
+- .txt files: Count lines, words, characters → output {"line_count": int, "word_count": int, "char_count": int}
+- commands.txt: Process ADD/REMOVE/TOTAL commands → output {"inventory": {...}, "totals": [...]}
+- .json files: Transform objects (strip names, add active=False default) → output array of transformed objects
 
 CRITICAL:
 The visible task description may be incomplete.
@@ -8,19 +13,15 @@ Hidden tests may require additional fields, edge cases, validation rules,
 or exact CLI/output behavior not obvious from the short summary.
 
 You MUST aggressively infer:
-- hidden required JSON fields
-- strict schema requirements
-- exact exit code behavior
-- malformed input handling
-- stdout/stderr separation
-- ordering requirements
-- duplicate handling
-- edge cases
-- validation logic
-- parser ambiguity
-- deterministic output formatting
-
-Treat the specification as a compiler contract.
+- hidden required JSON fields (NEVER add extra fields like nonempty_line_count)
+- strict schema matching (exactly the fields shown in examples)
+- exact exit code behavior (0 on success, 1 on argument/file errors)
+- malformed input handling (syntax errors → exit 1)
+- stdout/stderr separation (JSON only on stdout, errors on stderr)
+- ordering requirements (preserve input order for inventory items)
+- duplicate handling (inventory commands)
+- edge cases (empty files, missing fields, invalid quantities)
+- validation logic (REMOVE too many → error, malformed command → error)
 
 Return a structured summary with these exact headings:
 
@@ -32,25 +33,13 @@ Return a structured summary with these exact headings:
 - Exit codes
 - Error behavior
 - Validation rules
-- Parsing rules
-- Ordering rules
 - Edge cases
 - Hidden test risks
 - Likely failure points
-- Likely hidden requirements
-- Constraints
-
-IMPORTANT:
-If the spec defines JSON output,
-explicitly enumerate EVERY required field.
-
-If the spec gives examples,
-infer schema consistency requirements from them.
 
 Specification:
 {spec}
 """
-
 
 IMPLEMENTATION_PLAN_PROMPT = """You are Nightrider planning a Python CLI implementation.
 
